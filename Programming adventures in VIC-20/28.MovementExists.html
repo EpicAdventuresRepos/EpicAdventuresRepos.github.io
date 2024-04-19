@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Movement and exits</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Movement and exits</h2>
+
+<p>I do not need to store the number of target locations when using a grid. For example, if I am at location 10, I know that the location to the east will be 11 and the location to the west will be 9. 
+</p>
+<p> I do need to save whether there is an exit or not. If I use the four cardinal points, I have to store whether or not there is an exit for each of those points. I store this in one bit, 0 no exit, 1 yes exit.
+</p>
+<p>For example, if location 10 has its output bit like this: 0110. This binary number means that to the north and west there is no output but to the south and east there is.</p>
+<p>Thus, I store the outputs of two locations in a single byte.</p>
+<p>You have to be careful to close the outputs of the locations that are on the edges of the grid.</p>
+<p>I store the exits using one bit per exit. I need four bits per location, one to define if teir is an exit to the north, another bit to an exit the south, east and west.</p>
+<p>But 4 bits are half of a byte, so I can stores the exits of two locations in one byte. It saves memory, but, on the other hand, you need more memory for the code to read the exits.</p>
+<p>This is how I store exists in code.</p>
+<p></p>
+<p></p>
+
+
+<pre>
+  <code>
+; N S E O              0   1      2   3      4   5      6   7      8   9      10  11     12  13
+exits           BYTE %10101011, %00011110, %11110001, %01000110, %00010010, %10110001, %0000100 
+
+
+
+  </code>
+</pre>
+
+<p>You may think that this system does not allow going up or down. You are right. You have not enough free memory to implement that kind of maps. However, if you want to introduce an especial exist you may add a new verb that makes specific checks.</p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="26.MovementMap.html"> <<< Previous: Movement. The map</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="30.HowCheckExists.html"> Next: How to check exits >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

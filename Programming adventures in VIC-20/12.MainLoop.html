@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Main loop</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Main loop</h2>
+
+<p> A text adventure (like any other game) is a big loop that runs forever until the player exits the game. 
+</p>
+<p> Main loop of Pursuing Tom Ram is simple. Here is the code.
+</p>
+<p> 
+</p>
+<p> 
+
+</p>
+
+<pre>
+  <code>
+;--- Main subroutine --------------------------
+
+Game_Begin
+        ; Init variables
+        jsr Init
+        ; show intructions of the game
+        jsr Instructions
+        
+LocLoop
+        ; Print information
+        jsr PrintContent
+
+MainLoop
+        jsr InputCommand; get command
+        jsr EvalCommand
+        jmp MainLoop
+        rts 
+
+
+  </code>
+</pre>
+
+
+<p>Complex adventures should have a more complex main loop. For example, you may add a subroutine to perform actions after player writes a verb. </p>
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="10.StoringInformation.html"> <<< Previous: Storing information</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="14.PrintingThings.html"> Next: Printing things >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

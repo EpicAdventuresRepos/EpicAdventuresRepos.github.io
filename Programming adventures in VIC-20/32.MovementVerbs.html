@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Movement verbs</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Movement verbs</h2>
+
+<p>The idea for the four verbs of movement (N, S, E, W) is the same, see if there is an exit and match LOC according to the direction. To go north I add the number of rows to loc and to go south I add the rest. To go east I add 1 to loc and to go east I add the remainder.
+</p>
+<p> As I had to add or subtract and the quantity was different I made 4 subroutines.
+</p>
+<p>Time later, I went through the code and discovered that I could do it with a single routine, which I'll tell you about in Movement Improvement.</p>
+<p>This is the code for the four verbs. </p>
+<p></p>
+
+
+<pre>
+  <code>
+Norte ; North
+        ; Put the exit in the first
+        ; four bits of y
+        jsr MovementCommands
+        tya
+        ; Take the fourth bits
+        ; the first one indicates the north
+        and #%00001000
+        ; If it is 0 there is no exit
+        ; to north, so it is time to print 
+        ; a message
+        beq NoSalida 
+        ; In this map, going north
+        ; is adding 3
+        lda loc
+        clc
+        adc #$3
+        ; Rememeber to store the new loc
+        sta loc
+        jmp End
+
+Sur ; South
+        jsr MovementCommands
+        tya
+        and #%00000100
+        beq NoSalida ; No exit
+        lda loc
+        ; A substraction
+        ; The opposit one than north
+        sec
+        sbc #$3
+        sta loc
+        jmp End
+
+Este ; East
+        jsr MovementCommands
+        tya
+        and #%00000010 
+        beq NoSalida ; No exit
+        lda loc
+        clc
+        adc #$1
+        sta loc
+        jmp End
+
+
+Oeste ; West
+        jsr MovementCommands
+        tya
+        and #%00000001
+        beq NoSalida ; No exit
+        lda loc
+        sec
+        sbc #$1
+        sta loc
+        jmp End
+
+
+NoSalida
+        ; Print no exit
+        lda #<no_exit
+        ldy #>no_exit
+        jsr PRINT
+        rts
+        
+End     
+        ; Jump to the subrotuine sahich perints the
+        ; description of the LOC
+        jsr PrintContent 
+        rts
+
+  </code>
+</pre>
+
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="30.HowCheckExists.html"> <<< Previous: How to check exits</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="34.MovementImproved.html"> Next: Movement Improved >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

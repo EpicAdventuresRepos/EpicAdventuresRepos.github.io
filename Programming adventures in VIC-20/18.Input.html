@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Input</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Input</h2>
+
+<p>There are two main subroutines for reading from keyboard: CHIN and GET. 
+</p>
+<p>  CHIN is an Input. It captures all keys unit you press RETURN. On the other hand, GET waits a key and end.
+</p>
+<p>GET is your routine if you want to create a specific input routine. However, I have not nought memory in the VIC-20, so I will use CHIN. CHIN is a routine from de Commodore Kernal well documented, so you should use it without problems.</p>
+<p>VIC-20 documentation says: first time you call CHIN the computer asks the user a input ending in RETURN. Further calls returns characters one by one. So, you have to call CHIN one time for every character in input plus the first call.</p>
+<p></p>
+<p></p>
+
+
+<pre>
+  <code>
+;---------------
+Input
+        LDX #0
+
+@Loop
+        JSR CHIN
+        STA INPUT_BUFFER,X ; $200
+        INX
+        CMP #RETURN 
+        BNE @Loop
+        rts
+
+
+  </code>
+</pre>
+
+
+
+<p>With the previous code, I copy the characters read by CHIN in INPUT_BUFFER memory address (which is $200)</p>
+<p>How do I know when to stop calling CHIN? When CHIN returns a RETURN character</p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="16.PrintingObjects.html"> <<< Previous: Printing objects</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="20.UnderstandingInputI.html"> Next: Understanding input I. Break into pieces >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Verb Examine</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Verb Examine</h2>
+
+<p>Examine (EX) is one of the main verbs in any text adventure. It is the main source of information. The player will want to examine everything.
+</p>
+<p> My EXamine subroutine (first) check if player wants to examine an object. In that case, subroutine cheeks if player carry that object and shows its description.
+</p>
+<p>In other case, there is a chain of jumps to evaluate particular conditions. I will talk you about chains in the next section. 
+</p>
+<p> Here is a fragment of the code.
+
+</p>
+
+
+<pre>
+  <code>
+;---------
+Search_CMD
+        ; Player is in the garden'
+        cmp #LOC_GARDEN
+        bne @Next_Search_1
+
+        ; LEaf is hidden
+        ldx #LEAF_IND
+        jsr Item_is_Hidden
+        bne @Next_Search_1
+
+        ; Move LEaf to the garden
+        lda loc
+        sta obj_status,x
+
+        jsr PrintObjs
+        rts
+
+@Next_Search_1
+        ; Search symbols in the lounge
+
+        ; Player is in the lounge
+        lda loc
+        cmp #LOC_LOUNGE
+        bne @Next_Search_2
+
+        ; Player had the the dream
+        ; Flag 1 is set
+        ldy #$1
+        jsr read_flag_y
+        beq @Next_Search_2 ; es cero
+
+        ; You find the symbols under a carpet
+        ; You need the buried key and the magic word
+        lda #<str_find_symbols
+        ldy #>str_find_symbols
+        jsr PRTSTR
+
+        rts
+
+
+  </code>
+</pre>
+
+
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="40.Flags.html"> <<< Previous: Flags</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="44.Chains.html"> Next: Chains >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

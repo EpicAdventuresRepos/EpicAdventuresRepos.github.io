@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Understanding input I. Break into pieces.</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Understanding input I. Break into pieces.</h2>
+
+<p>The simplest input a text adventure should manage is a VERB and a NAME, for example, GO NORTH, TAKE KEY or EXAMINE TREE. So I program a subroutine that process a verb and a carriage return or a verb, an space, a name and a carriage return. 
+</p>
+<p> So, after an input, I will search for an space and Split the input into two parts, first one will be the verb and the other one (if any) will be the name.
+</p>
+<p>Some verbs does not need a name (INVENTORY, NORTH, etc.), So it will be ok if name is empty. If VERB needs a name I will check if there is a valid NAME.</p>
+<p></p>
+<p></p>
+
+
+<pre>
+  <code>
+;---------------
+ProcessInput
+
+        ldx #0
+        ldy #0
+
+        ; Cleans verb and name
+        stx verb+1 
+        stx name
+        stx name+1
+
+N_C     lda INPUT_BUFFER,X
+        cmp #RETURN
+        beq @End
+        CMP #SPACE 
+        beq @Reset
+        cpy #$4
+        beq @Next
+        sta verb,y
+        iny
+        cpy #$2
+        beq @Disable
+
+@Next    
+        inx
+        jmp N_C
+
+@Disable
+        ldy #$4
+        jmp @Next
+
+@Reset
+        ldy #$2
+        jmp @Next
+
+@End    
+        lda #RETURN
+        jsr CHROUT 
+        rts
+
+  </code>
+</pre>
+
+
+
+<p>Text adventures does not use all characters in the input. They select a number of characters from VERB and INPUT and discard the rest.</p>
+<p>Pursuing Tom Ram uses two characters only for VERB and NAME, So EXAMINE and EX are the same input.</p>
+<p>I store both string (4 bytes in total). Maybe I could process VERB first and then NAME.</p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="18.Input.html"> <<< Previous: Input</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="22.UnderstandingInputII.html"> Next: Understanding input II. Do I know you? >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Objects player can take and objects she cannot</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Objects player can take and objects she cannot</h2>
+
+<p> I only have one vector for names. This vector includes the objects a player can take and carry and other names that are not objects.
+</p>
+<pre>
+<code>
+; Objects: CHandelier (43 48), GLasses, REvolver (52 45), LEaf (4C, 45), IDol (49 44), DOll (44, 4f)
+; No Objs: DIary (44 49), BEd (42 45), MIrror (4D 49), TOm (54 4f), MOnster (4D, 4f), TRapdoor (54, 52)
+; GOrdon (47 4f)
+name_tokens     BYTE $43, $48, $47, $4C, $52, $45, $4C, $45, $49, $44, $44, $4f
+                BYTE $44, $49, $42, $45, $4d, $49, $54, $4f, $4d, $4f, $54, $52, $0 
+
+</code>
+</pre>
+<p> So, how knows the game that a doll is something he player may take but the bed must stay in its loc? You have the answer in the code.
+</p>
+<p> First names are objects you can carry. I use this constant: OBJECTS_NUMER = $7.
+</p>
+<p> If the name token number is lower than this contact, then is an object the player may takes. It other cases, take command will fail. Take a look at the Take command..
+</p>
+<pre>
+<code>
+Take_CMD
+        ; Name is an item
+        jsr Name_Is_Item
+        bcs Take_P_Useless 
+
+</code>
+</pre>
+<p> The first thing this command does is to see if name is a object player may take. Here you have the full code of the subroutine. 
+</p>
+<pre>
+ <code>
+
+;---
+Name_Is_Item
+        lda name_index
+        tax        
+        ; If name is bigger than the cosntant, 
+        ; then the player cannot take ir
+        sec
+        sbc #OBJECTS_NUMER 
+        rts
+
+
+  </code>
+</pre>
+
+
+<p>Remember. I have to decrement index because $0 means an invalid name, but the first name is index 0. I fixed this inconsistence in my next game, Desert.</p>
+<p>If you want to introduce a new objet player may take, you have to remember to add it after the last one and increase the constant. However, if you add an object that player cannot take, you have to add it at the end of the vector and constant remains the same.</p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="44.Chains.html"> <<< Previous: Chains</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="48.OnePuzzleDiary.html"> Next: One Puzzle.Diary >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

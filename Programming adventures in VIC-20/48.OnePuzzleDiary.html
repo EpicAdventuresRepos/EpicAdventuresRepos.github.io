@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. One puzzle. Diary</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> One puzzle. Diary</h2>
+
+<p> Branch distance has a limit.
+</p>
+<p> A text adventure is not funny if there is no puzzles to solve. I will explain you a couple of puzzles from Pursuing Tom Ram.
+</p>
+<p> One of the first puzzles is to read the diary.
+</p>
+<p> If player tries to read de diary in the very beginning of the game, you will find that you understand nothing due its fuzzy characters.
+</p>
+<p> If player takes the glasses and examine it, you will see everything fuzzy. Fuzzy is the clue. If you read the diary wearing your glasses in the inventory (you have not to do anything else) you will understand the diary.
+</p>
+<pre>
+  <code>
+;- Read diary with classes
+Read_CMD
+        ; loc is desktop
+        cmp #LOC_LIBRARY
+        bne P_Useless
+
+        ; Name es diary
+        lda name_index
+        cmp #DIARY_IND
+        bne P_Useless
+
+        ; Player has glasses in inventory
+        ldx #GLASSES_IND
+        jsr Item_In_Inventory        
+        bne P_Understand_Nothing
+
+        ; print message
+        lda #<str_read_diary
+        ldy #>str_read_diary
+        jsr PRTSTR
+
+        ; Set flag 0.
+        ; The game knows if diary is read
+        ; using this flag
+        ldy #$0
+        jsr set_flag_y
+
+        rts
+
+; If player is not in desktop or try to read
+; a thing it is not a diary.
+P_Useless
+        lda #<str_useless
+        ldy #>str_useless
+        jsr PRTSTR
+        rts
+
+; Readin the diary witthout the glasses
+; This is clue, that player needs glasses
+P_Understand_Nothing
+        lda #<str_understand_nothing
+        ldy #>str_understand_nothing
+        jsr PRTSTR
+        rts
+
+
+  </code>
+</pre>
+
+
+<p>It seems a lot of code, but it is the same one, once and again. This is the only valid use of REad verb, so all code in in its subroutine.</p>
+<p>I know that this puzzle may be so easy that players try to resolve it in a more complex way.</p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="46.ObjectsPlayerCanTake.html"> <<< Previous: Objects you can take and objects you do not</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="50.AProblemWithBranches.html"> Next: A problem with the branches >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

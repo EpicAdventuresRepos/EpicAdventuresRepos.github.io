@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. More memory</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> More memory</h2>
+
+<p> Pursuing Tom Ram does not work with any memory expansion. The changes to make it work with a memory expansion are simple.</p>
+<p> At the very beginning of the code, you will find the staring address for the code “*=$1001”. VIC-20 unexpanded RAM starts at $1000. <p>
+<p>
+</p>
+<pre>
+  <code>
+; Starting RAM memory for
+;unexpanded VIC-20 
+*=$1001
+
+  </code>
+</pre>
+
+
+<p>You need to change the starting address from $1001 to $401 to run Pursuing Tom Ram with a 3 Kb. memory expansion. For a memory expansion of 8 Kb. or higher, you have to change the starting address from $1001 to $1201.</p>
+<p>When you change the RAM starting address, you have to change (or remove) the basic loader too. The original BASIC loader is this: </p>
+<pre>
+  <code>
+        BYTE    $0B, $10, $0A, $00, $9E, $34, $31, $30, $39, $00
+        BYTE    $00, $00
+
+  </code>
+</pre>
+<p>This loader executes a SYS 4109 ($100D), so you have to change the SYS address to the new starting point. For example, if you modify the code for a 3 Kb. expansion, the starting address for SYS is $40D (1037), so the loader will be:</p>
+<pre>
+  <code>
+        BYTE    $0B, $10, $0A, $00, $9E, $31, $30, $33, $37, $00
+        BYTE    $00, $00
+
+
+  </code>
+</pre>
+
+	</div>	
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="56.Memory.html"> <<< Previous: Memory</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="60.PortabilityC64.html"> Next: Portability to Commodore 64 >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

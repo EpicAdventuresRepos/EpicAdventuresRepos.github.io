@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. How to add a new verb</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> How to add a new verb</h2>
+
+<p> Add the first two characters (or one character and a $0), to verb vector. Remember that order matter.
+</p>
+<pre>
+  <code>
+SINGLE_VERB=11
+
+; N,S,E,W,I (49), Look (4c), SLeep (53 4c), SEarch ($53, $45),   
+verb_tokens     BYTE $4e, $0, $53, $0, $45, $0, $57, $0, $49, $0, $4C, $0, $53, $4c, $53, $45
+                ; EHe (45 48), DIe (44 49)
+                BYTE $45, $48, $44, $49 
+                ; TAke, EXamine, REad (52 45), PUt (50 55), SHoot (53 48), OPen(4f 50)
+                BYTE $54, $41, $45, $58, $52, $45, $50, $55, $53, $48, $4f, $50
+                ; EAt (45, 41)
+                BYTE $45, $41
+                BYTE $0  
+
+verb_pointers   WORD  Move_CMD, Move_CMD, Move_CMD, Move_CMD, Inventory_CMD, Look_CMD, Sleep_CMD, Search_CMD
+                WORD  Ehe_CMD, SR_You_Die
+                WORD  Take_CMD, Examine_CMD, Read_CMD, Put_CMD, Shoot_CMD, Open_CMD
+                WORD  Eat_CMD
+
+  </code>
+</pre>
+
+
+<p>If verb does not need a name, you have to add it in the first middle of the vector. Then, you have to increase the constraint too. In other case, you can add it at the end of the vector and constant remains the same.</p>
+<p>Then you have to write a subroutine for the verb. Start the subroutine with a label (something like New_Verb_CMD) and end it with a rts.</p>
+
+<p>After that, add the label to the vector “verb_pointers”. Bear in mind that the order of this vector has to be the same order than verbs in “ver_tokens”</p>
+
+<p>If you have problems adding a new verb, let me know.</p>
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="50.AProblemWithBranches.html"> <<< Previous: 50. A problem with the branches</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="54.Synonymous.html"> Next: 54. Synonymous >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

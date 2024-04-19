@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Previous knowledge</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Previous knowledge</h2>
+
+<p> You do not need to have a Deep learning of 6502 assembly or assembly in general. I encourage you to read any text about how to program text adventures.
+</p>
+<p> What I do in this guide, is following a book about programing BASIC adventures figuring out how to implement the BASIC code in assembler.
+</p>
+<p> You do not need to write any adventure in BASIC (or using any Parser) if you do not want to, but it could help.
+</p>
+<p> The best book I know about writing adventure games is Write your Own Adventure Programs for your Microcomputer. Thar book have tips for implementing games using little amount of memory, like coding the exists using one bite per exit instead of saving the number of the destination location (which consumes one byte / 8 bits).
+</p>
+
+
+
+<p>I use the datatypes from CBM PRG Studio, but I only use three of them: BYTE for numbers, WORD for memory address (two bytes) and TEXT for text, although sometimes I store text as a sequence of bytes (for example in verbs and names vectors).</p>
+<p>TEXT datatype does not include the end of string character, so I always add a $0.</p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="index.html"> Index</a> |||
+		<a href="04.MyExperience.html"> Next: My experience >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

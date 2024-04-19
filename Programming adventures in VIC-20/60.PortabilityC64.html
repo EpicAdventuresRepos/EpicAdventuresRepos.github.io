@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Portability to Commodore 64</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Portability to Commodore 64</h2>
+
+<p> Luckily, many Commodore computers share processor, Kernal and BASIC Roms. You can use the code and all the contents of this book for Pet and C-64. </p>
+<p> The main change you have to do to the code is the address of the RAM memory. If you want to run this adventure (or your own adventures) in an expanded VIC-20, you have to change this address too. <p>
+<p> At the very beginning of the code, you will find “*=$1001”. VIC-20 unexpanded RAM starts at $1000 (3 Kb expansion for VIC-20 does not change this value).</p>
+<p>C-64 RAM (in the default mode) starts at $0800, so you have to change the starting address and the BASIC loader. Here you have the one for the C-64.
+</p>
+<pre>
+  <code>
+   *=$0801
+        BYTE    $0B, $08, $0A, $00, $9E, $32, $30, $36, $31, $00
+        BYTE    $00, $00
+
+	; Subroutines
+	PRNSTR = $AB1E
+	CHROUT = $FFD2 
+	CHIN = $FFCF 
+	CLEAR = $E544 
+
+
+  </code>
+</pre>
+
+
+<p>BASIC ROM is located at a different memory address, so you have to change that constants too (Kernal ROM remains the same). </p>
+<p>And that’s all. You will see text only in the half of the screen because a VIC-20 has the half of columns, but you can improve it removing some RETURN constants. </p>
+
+<p> </p>
+	</div>	
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="58.MoreMemory.html"> <<< Previous: 58. More memory</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="62-PortabilityPET.html"> Next: 62.Portability to PET / Commodore-16 >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

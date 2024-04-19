@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Hidden objects</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Hidden objects</h2>
+
+<p>A hidden object is an object the player cannot found until she does something (like examine another object, open an object write a etc.). There are several ways to manage hidden objects. You can use flags, you can use the status bits, you can use and additional vector for the status of each object, etc.
+</p>
+<p> At my first try, I wanted to use status bits to mark hidden objects. I used a different approach at in the end. I store hidden objects in a special location. When the player finds and object, I will move it from the hidden location to the actual location.
+</p>
+<p>I use a location that does not exist in the game as the hidden location. 
+</p>
+
+
+<pre>
+  <code>
+;--- 
+; Param x object index
+Item_is_Hidden
+        jsr Lda_Obj_Status
+        cmp #LOC_HIDDEN
+        ; If Z = 0 is in hidden loc
+        ; So it is a hidden object
+        rts
+
+  </code>
+</pre>
+
+<p> </p>
+
+<pre>
+
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="36.Inventory.html"> <<< Previous: Inventory</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="40.Flags.html"> Next: Flags >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

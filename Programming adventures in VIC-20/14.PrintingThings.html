@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Printing things</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Printing things</h2>
+
+<p>As you now, there is a very good print routine in the BASIC Rom, so problem solved. But, how can I know in which location is the player and which is the text to print? With an index. 
+</p>
+<p>  In the code, “loc” is the memory address where I store the location of the player.
+</p>
+<p> If you look at the end of the code, you will find that I store all the descriptions of the locations in a vector (called desc_list). When I access this vector with the index (loc “variable”), I have the description of the location.
+</p>
+<p>What I really store in the vector is the memory address of the description. Each memory address has two bytes (in almost every 8 bit computers and, of course, in all commodore computers). So, I have to multiply the index by two  to obtain the proper index (description for loc 0 is in 0, 1 positions, description of the loc 1 is in 2, 3 positions, description of loc 2 is in 4, 5 positions, etc.). </p>
+<p>One more thing. Commodore computers (and almost every 8 bit computer) is little endian. This means that they store first the lower byte of a memory address. Therefore, memory address $1E00 is stores 00, 1E in memory. </p>
+<p>For that reason, the first byte I read goes into a, and the second one goes into y </p>
+<p> </p>
+
+<pre>
+  <code>
+;-------------------
+PrintLoc
+        ; clear screen
+        jsr CLEAR
+
+        ; print 'you are in the '
+        lda #<you_are
+        ldy #>you_are
+        JSR PRTSTR
+
+        ; Search position ind escription vector 
+        ; for current loc
+        lda loc
+        ; Multiply loc by 2 to obtain index
+        ; x = (loc*2)
+        asl
+        tax
+        ; Remembre.
+        ; Before calling prntstr, low byte goes in a
+        ; High byte goes in y.
+        lda desc_list,x
+        ldy desc_list,x+1
+        JSR PRTSTR
+
+        ; Descriptions are stored without carryage return
+        ; So I print the carryage return character
+        lda #RETURN
+        jsr PRINT_CHAR
+        rts
+
+  </code>
+</pre>
+
+
+<p>Remember this section because I will use vectors with memory address more times in the future. </p>
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="12.MainLoop.html"> <<< Previous: Main loop</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="16.PrintingObjects.html"> Next: Printing objects >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

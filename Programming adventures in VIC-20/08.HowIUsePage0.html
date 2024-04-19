@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. How I use page 0</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> How I use page 0</h2>
+
+<p> Pursuing Tom Ram uses almost all bytes form the 3,5 KB from RAM. So no need to use page 0. However, I use some positions of page 0 for two main reasons.
+</p>
+<p> First, you cannot use indirect addressing without using page 0. If you do not what I am talking about, do not worry. I will introduce this technical jargon in a future section.
+</p>
+<p> Second, I wanted to experiment with page 0.
+</p>
+<p> In the Student Version of the code I only use three positions in page 0 (for temporal purposes) and these positions are empty so there is no conflict using them.
+</p>
+
+<pre>
+  <code>
+; Memory addresses
+INPUT_BUFFER = $200
+P0_TMP_A = $fb
+P0_TMP_B = $fc
+P0_TMP_BYTE = $fd
+
+
+
+  </code>
+</pre>
+
+
+<p>If you the code, there is a constant called INPUT_BUFFER with a value of $200 (this is the beginning of memory page 3). This is the beginning of page 2 and it is where BASIC stores a buffer. Computer reserves memory from $200 to $258 for BASIC lines of code. So, it is an empty position that I use to store the inputs of the player.</p>
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="06.RomSubroutines.html"> <<< Previous: Rom subroutines</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="10.StoringInformation.html"> Next: Storing information >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

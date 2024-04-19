@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Chains</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Chains</h2>
+
+<p> I use chains a lot, for example implementing Examine, or PUt verbs.
+</p>
+<p> Remember EXamine. I player uses the verb with different objects in different locations it may print a different message.
+</p>
+<p> So what I do is to test the first set of conditions. If one of the conditions is nor true, then I move to check another different set of conditions. That is why I call this a chain.
+</p>
+<p> Here you have another example with the verb PUt.
+</p>
+
+<pre>
+  <code>
+;----------------
+
+P_Done
+        lda #<str_done
+        ldy #>str_done
+        jsr PRTSTR
+        rts
+
+Put_No_Carried
+        jmp Ex_No_Carried
+
+
+Put_CMD
+        ; Check name is in the inventory
+        ; of the player
+        ldx name_index
+        jsr Item_In_Inventory
+        bne Put_No_Carried
+
+        ; -- Put Leaf in Bed
+
+        ; Name is LEaf
+        ldx name_index
+        cpx #LEAF_IND
+        bne @Next_Put_1
+
+        ; Loc is beedroom
+        lda loc
+        cmp #LOC_BEDROOM
+        bne @Next_Put_1
+
+        dex
+        lda #LOC_DESTROYED ; LOC 3D / 61 - Destroyed
+        sta obj_status,x
+        ; Mensaje
+        jsr P_Done
+        rts
+
+@Next_Put_1
+        ; -- Put CAndelebra in lounge
+
+        ; You had the vision
+        ldy #$1
+        jsr read_flag_y
+        beq @Next_Put_2 ; Sie s 0 no la tienes
+
+        ; Loc is lounge
+        lda loc
+        cmp #LOC_LOUNGE
+        bne @Next_Put_2
+
+        ; Name is CHandelier
+        ldx name_index
+        cpx #CHANDELIER_IND
+        bne @Next_Put_2
+
+        ; Remove item and write 'Done'
+        ; I could use status bit for destroyed items
+        dex
+        lda #LOC_DESTROYED ; LOC 3D / 61 - Destroyed
+        sta obj_status,x
+
+        ; Mensaje
+        jsr P_Done
+        rts
+
+
+  </code>
+</pre>
+
+
+<p></p>
+<p>I know that this puzzle may be so easy that players try to resolve it in a more complex way.</p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="42.VerbExamine.html"> <<< Previous: Verb Examine</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="46.ObjectsPlayerCanTake.html"> Next: Objects player can take and objects plater cannot >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. How to check exits</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> How to check exits</h2>
+
+<p>First, I have to discover the byte with the exits of the current loc. Then, I have to discover if I have to use the first half of the byte or the second one. Then, I have to extract the byte of the exits and, finally, I check if it is a 1, there is an exit or 0, no exit. 
+</p>
+<p> It seems a lot of work but using bit masks it will be easy.
+</p>
+<p>This is the code of the first steps, where I take the byte and the right half of the byte. I add the beginning of the north command so you can see that a command verb calls this subroutine first to get the right half of the byte.</p>
+<p></p>
+<p></p>
+
+
+<pre>
+  <code>
+MovementCommands
+        ; I have in a the current loc.
+        ; I store two locs in each position of the exit vecter
+        ; So I divide the loc by two to obtain the index
+        lsr
+        tax 
+        lda exits,x 
+        tay 
+
+        ; I load the current loc again and 
+        ; I check the first bit.
+        ; this is the way to see if loc is pair / odd
+        lda loc
+        and #%00000001 
+        ; If loc is odd, the exists are in 4 
+        ; lower bits, so their nothing else to do
+        bne Go_Back
+        
+        ; It is pair, so it is in the 4 ihest bits
+        ; I move that bits four positions right
+        tya
+        lsr
+        lsr
+        lsr
+        lsr
+        tay 
+Go_Back 
+        rts
+
+Norte ; North
+        jsr MovementCommands
+
+
+
+
+
+  </code>
+</pre>
+
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="28.MovementExists.html"> <<< Previous: Movement and exits</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="32.MovementVerbs.html"> Next: Movement verbs >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

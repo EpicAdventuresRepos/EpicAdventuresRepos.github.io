@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Understanding input II. Do I know you?</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Understanding input II. Do I know you?</h2>
+
+<p>Last task is to see if my adventure understand the two characters in the verb and the name. But I want more. I also want to know what to do if my adventure understand the verb. Again, I will have a vector with the verbs and a vector with the names my adventure understand. As the previous vector, each position uses two bytes. In this case, positions in the vector are not memory positions, but the letters of the verbs and names. 
+</p>
+<p> The code will traverse the vector and, if a match is found, I store the numeric position for the following routines.
+</p>
+<p>I use a helper subroutine. This subroutine traverse a vector searching for a match, every time it found a match calls another subroutine called the callback.</p>
+<p>This code need the vector to traverse as a parameter and the token to search as additional parameter.</p>
+<p>I use indirect addressing so I have to use two memory positions in the page 0. Indirect addressing is a concept vastly explained in any 6052 programing web or book. If you need more help understanding it, let me know.</p>
+<p>First the code of the main subroutine which set the parameter and callas the helper subroutine.</p>
+<p></p>
+
+
+<pre>
+  <code>
+;---------------
+TokenizeVerb
+
+        ; Set the vector of verbs as parameter
+        ; of the helper 
+        lda #<verb_tokens
+        sta P0_TMP_A 
+        lda #>verb_tokens
+        sta P0_TMP_B
+
+        lda verb
+        sta token
+        lda verb+1
+        sta token+1
+
+        jsr f_Tokens
+        ; Token en verb_index
+        sta verb_index
+        ;pla 
+        ;sty verb_index
+        rts
+
+  </code>
+</pre>
+
+<p>I use the subroutine F_Token for searching for a valid verb and for a valid name too.</p>
+
+
+<pre>
+  <code>
+;------ 
+; Find a token in a vector
+; The token must be in $Token
+; Returns the index of the token in a
+; starts with 1, a = 0 means it has not been found
+; 
+F_tokens   
+        ldy #$0
+
+F_Loop    
+        lda (P0_TMP_A),y
+        beq F_Exit ; N
+        cmp token
+        bne Next1
+        iny
+        lda (P0_TMP_A),y
+        cmp token+1
+        bne Next2
+        iny
+        tya
+        lsr
+        
+F_Exit  ; a = 0 not found, other found  
+        rts
+
+Next1   iny
+Next2   iny
+        jmp F_Loop
+
+
+  </code>
+</pre>
+
+
+
+<p>If my code traverse all VERBs (or Names) and no match found, the adventure show an error message and repeat the input.</p>
+<p>I do the same for name. Here you have the subroutine called from F_Token for the name vector.</p>
+
+<pre>
+  <code>
+;---------------
+TokenizeName
+
+        lda #<name_tokens
+        sta P0_TMP_A 
+        lda #>name_tokens
+        sta P0_TMP_B
+
+        lda name
+        sta token
+        lda name+1
+        sta token+1
+
+        jsr f_Tokens
+        ; Token en verb_index
+        sta name_index
+        rts
+
+
+
+  </code>
+</pre>
+
+<p>One I have the indexes, is time to implement each verb of the game.
+</p>
+<p>This routine is, provably, one of the most complex one in the code. Do not worry if you do not understand it. You may try to rewrite it I a simple way. If it works, it is ok.
+</p>
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="20.UnderstandingInputI.html"> <<< Previous: Understanding input I. Break into pieces</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="24.CheckingVerbName.html"> Next: Checking verb and name >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

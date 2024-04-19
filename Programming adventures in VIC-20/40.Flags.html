@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Flags</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Flags</h2>
+
+<p>Pursuing Tom Ram uses flags to find out what has happened and what has not happened. For example, the game knows if a door is open or closed by assigning a flag to the door and checking its value. It is an example. There are not doors in this game. 
+</p>
+<p> Here I use the same technique I used for the exits. To save memory, the flags will be bits. A flag can only have a value of 0 or 1. 
+</p>
+
+
+<pre>
+  <code>
+; Geeral purpouse flags
+; Each flag is 1 bit, so the game have 16 flags
+flags
+        BYTE $0, $0
+
+; Masks to manipulate flags and exits
+masks
+        BYTE %00000001, %00000010, %00000100, %00001000
+        BYTE %00010000, %00100000, %01000000, %10000000
+
+
+
+  </code>
+</pre>
+
+<p> I have written routines to read and change a particular bit. I do that with masks and binary operators.</p>
+<p>I have 8 flags in a byte. If I want to know, for example, the value of flag 5, I read only that bit with AND %00100000. If I have a 0 in the accumulator, the flag is set to 0 and if not 0, the flag is set to 1. </p>
+<p> I do an OR to set a flag. For example, I set flag 5 to 1 with OR %00100000.</p>
+<p> To set a flag to 0 I use the opposite mask of the one to read. For example, I set flag 5 to 0 with AND #%11011111. I do not need to store this masks because I can generate from the original mask with XOR.</p>
+<p> I need eight masks, one mask for each flag. I store them in a vector, instead of creating them with code.</p>
+
+
+<pre>
+  <code>
+set_x_y
+        ; Innter subroutine
+        ldx #$0
+        tya
+        and masks+$3
+        beq set_rts
+        inx
+        tya
+        sec
+        sbc #$8
+        tay
+set_rts
+        rts
+
+set_flag_y
+        jsr set_x_y
+        lda flags,x
+        ora masks,y
+        sta flags,x
+        rts 
+
+
+  </code>
+</pre>
+
+<p> The mask I need to set a flag to 0 is created by calculating the inverse of the original mask. I use EOR #$FF to calculate the inverse of a byte. In this adventure I do not need to set a flag to 0, except at the start of the game, so this code can be removed to save space.</p>
+
+
+<pre>
+  <code>
+clear_flag_y
+        jsr set_x_y
+        lda masks,y
+        eor #$FF ; Invert mask
+        and flags,x
+        sta flags,x
+        rts 
+
+  </code>
+</pre>
+
+<p> I use two bytes for flags, so I have 16 flags. I have to check if the flag I want to use is in the first byte (flags 0 to 7), or in the second byte (flags 8 to 15).</p>
+<p> </p>
+<p> </p>
+
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="38.HiddenObjects.html"> <<< Previous: Hidden objects</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="42.VerbExamine.html"> Next: Verb Examine >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

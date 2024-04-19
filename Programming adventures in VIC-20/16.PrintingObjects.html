@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Printing objects</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Printing objects</h2>
+
+<p>If there are objects in the room, and they are not hidden, I want to tell that to my player. 
+</p>
+<p>  I made a big mess managing objects in this game. I will tell you my mistakes so you can avoid them.
+</p>
+<p> If you look at the end of the code, you will find that I store all the descriptions of the locations in a vector (called desc_list). When I access this vector with the index (loc “variable”), I have the description of the location.
+</p>
+<p>I have groups all sections related to objects together. So I will not explain you the code to print objects (and the code for the command Inventory) here, but in a following section. Anyway, here you have the code, you can start to read the comments. </p>
+
+
+<pre>
+  <code>
+;-------------------
+PrintObjs
+        ; Using the Input buffer as temporal storing
+        ; for a subroutine
+        lda #<see_object
+        sta INPUT_BUFFER
+        lda #>see_object
+        sta INPUT_BUFFER+1
+
+        lda loc
+        sta P0_TMP_BYTE
+
+; Inventory command reuse this entry.
+Inventory_Entry 
+        ; Prepare the callback for the subroutine
+        lda #<C_Print_Item
+        sta P0_TMP_A
+        lda #>C_Print_Item
+        sta P0_TMP_B
+        
+        jsr F_Search_Object
+        rts
+
+; Callback
+C_Print_Item
+; If an object is found in the loc, 
+; this subroutine prints the message in INPUT_BUFFER
+
+        ; Item found in loc
+        ; Print item name
+        ; Remember, if you store memory addresses, 
+        ; you multiply index by 2.
+        ; x = (loc*2) 
+        
+        asl
+        pha
+
+        ; Print the string stored in input buffer
+        ldy INPUT_BUFFER+1
+        lda INPUT_BUFFER
+        ; Take care, this subroutine changes the 
+        ; three registers
+        JSR PRTSTR 
+      
+        pla
+        tax
+
+        ; Prints the name of the object
+        ldy obj_list,x+1
+        lda obj_list,x 
+        JSR PRTSTR
+        
+        lda #RETURN
+        jsr CHROUT
+
+        ; Jump back to the subroutine      
+        jmp F_SO_Back
+
+
+  </code>
+</pre>
+
+
+
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="14.PrintingThings.html"> <<< Previous: Printing things</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="18.Input.html"> Next: Input >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

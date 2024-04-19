@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Portability to PET / Commodore-16</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Portability to PET / Commodore-16</h2>
+
+<p> Sadly, I did not make the code run ina a PET Commodore (BASIC 4.0). Game starts and instructions appear on screen but, then, there is a error and the game ends. </p>
+<p> PETs have almost the same BASIC and Kernal ROMs than VIC-20 and C.-64 so it should be easy to make the game run. I need to take some extra time and search as much documentation as possible. <p>
+<p> My first try was the same than with C-64. I changed the starting address and the address of the subroutines for the PET. You have the code next.</p>
+<pre>
+  <code>
+   *=$0801
+        BYTE    $0B, $08, $0A, $00, $9E, $32, $30, $36, $31, $00
+        BYTE    $00, $00
+	; Subroutines
+	PRNSTR = $AB1E
+	CHROUT = $FFD2 
+	CHIN = $FFCF 
+	CLEAR = $E544 
+
+  </code>
+</pre>
+
+<h2> Portability to PET / Commodore-16</h2>
+<p>Commodores introduced deep changes in C-16 / PLUS/4 model. I am not sure if changing the starting address and tea dresses of the subroutines is enough to make the game run. I need further study. </p>
+<p>I have not in mind developing a native version for C-128. C-64 version should work fine in a C-128 in mode 64. </p>
+
+<p> </p>
+	</div>	
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="60.PortabilityC64.html"> <<< Previous: 60. Portability to Commodore 64</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="64-PortabilityOthers.html"> Next: 64. Portability to other 6502 systems >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

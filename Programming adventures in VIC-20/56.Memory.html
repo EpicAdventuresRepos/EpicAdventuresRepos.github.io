@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Memory</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Memory</h2>
+
+<p> The Student Edition fits in the 3,5 Kb. free Ram of the VIC-20.</p>
+<p> Pursuing Tom Ram uses three memory bytes from page 0 for a good reason. I have to use addresses in page 0 for the indirect addressing I use it in a couple of subroutines, the ones with the callback. <p>
+<p>You can gain some extra bytes if you use more addresses from page 0. Last version of the code uses more page 0 addresses. Here you have a list.
+</p>
+<pre>
+  <code>
+ ;verb            
+; 47 - 48 Variable address
+verb = $47
+
+;name            
+; 49 - 4a Variable pinter for FOR
+name = $49
+
+
+;token           
+; $45 - 46 Current variable name
+token = $45
+
+; $71, 72 Cassete buff len
+
+; $73 - 8a CHRGET subroutine
+;loc     BYTE    $0
+loc = $73
+
+;verb_index      
+verb_index = $74
+
+;name_index       
+name_index = $75
+
+;flags        
+flags = $76
+
+  </code>
+</pre>
+
+
+<p>Sadly I was not able to store data or code directly in page 0 using CBM PRG Studio. If you know how I would like to hear you.</p>
+<p></p>
+
+<p></p>
+
+	</div>	
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="54.Synonymous.html"> <<< Previous: 54. Synonymous</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="58.MoreMemory.html"> Next: 58. More memory >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

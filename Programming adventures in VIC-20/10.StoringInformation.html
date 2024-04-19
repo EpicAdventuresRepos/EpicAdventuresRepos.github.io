@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming adventures in VIC-20 (valid for C-64). Section Portability to other 6502 systems">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming adventures in VIC-20. Storing information</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura02_Mini.jpg"/>
+		</td>
+		<td> <b> Pursuing Tom Ram </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming adventures in VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Storing information</h2>
+
+<p> The vast amount of information is the data of the adventure, mainly text. This adventure uses a little number of “variables” (which are memory positions, of course).
+</p>
+<p> 
+</p>
+<p> 
+</p>
+<p> 
+
+</p>
+
+<pre>
+  <code>
+verb            BYTE $0, $0 ; Input from keyboard
+name            BYTE $0, $0 ; name for the keyboard
+                            ; It must follow the verb's memory posotityions'
+token           BYTE $0, $0 
+loc             BYTE $0 ; Location of the player. 
+verb_index      BYTE $0 ; 0 mena no found.
+name_index      BYTE $0 
+
+; Geeral purpouse flags
+; Each flag is 1 bit, so the game have 16 flags
+flags
+        BYTE $0, $0
+
+  </code>
+</pre>
+
+
+<p>There is also a number of constant that I will describe in the parts of the code where they are used.</p>
+<p></p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="08.HowIUsePage0.html"> <<< Previous: How I use page 0</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="12.MainLoop.html"> Next: Main loop >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	
