@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Desert.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Desert.</title>
+  </head>
+
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura150.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20 (and Commodore 64).</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Desert. Development guide</h2>
+
+<p> The goal of this guide is helping you in learning and writing games in assembly for Commodore computer family (mainly VIC-20) and, specially, grid games. A grid game is similar to a text adventure but it is much easier to program. One famous grid game was Hunt the Wumpus.
+
+<p> Almost everything works for a Commodore 64. You will find the changes for a C-64 at the end of this guide.
+</p>
+<p> This development uses the Student Edition of Desert 
+( <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				source code in Github.
+			</a>). 
+There are little changes between Student Edition and the final version. Final version introduces sound effects and change the color of the background.
+
+</p>
+<p> If you found gaps in this guide, let me know.
+</p>
+<p> There is a similar guide about Pursuing Tom Ram, a assembler text adventure for the unexpanded VIC-20.
+</p>
+<br/>
+<h2> Index </h2>
+
+<ul>
+
+<li/> <p> Introduction. Main differences </p>
+<li/> <p> Introduction. ROM subroutines </p> 
+<li/> <p> Storing data. Variables and page 0 </p> 
+<li/> <p> Storing data. Map of desert </p> 
+<li/> <p> Locations. Main loop </p> 
+<li/> <p> Locations. Reading input </p> 
+<li/> <p> Locations. Flags </p> 
+<li/> <p> Locations. Routing to locations </p> 
+<li/> <p> Locations. Examples of locations </p> 
+<li/> <p> Enemies. Enemy types</p> 
+<li/> <p> Enemies. A problem with Flasks </p> 
+<li/> <p> Verbs. Movement verbs </p> 
+<li/> <p> Verbs. Answers to verbs </p> 
+<li/> <p> Verbs. The Temple </p> 
+<li/> <p> Miscellanea. Porting to commodore 64 </p> 
+</ul>
+
+<p></p>
+<p>Have fun.</p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		|||
+		<a href="../index.html"> Index</a> |||
+		<a href="02.Introduction.html"> Next: Introduction >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

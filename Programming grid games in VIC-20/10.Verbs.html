@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Verbs.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Verbs.</title>
+  </head>
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura100.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Movement verbs</h2>
+
+<p>Desert uses two memory addresses to register the position of the player(the X and the Y), so each verb have to check the right address. Here you have the code.</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+;--- Movement -----------------------------
+
+North_Cmd
+        ; Y has reached de limit
+        ldx player_y
+        cpx #$f
+        beq PR_No_Exit
+
+        inx
+        stx player_y
+
+        jmp Reduce_Water_Life
+
+South_Cmd
+        ; Y has reached de limit
+        ldx player_y
+        ; Cero
+        beq PR_No_Exit
+
+        dex
+        stx player_y
+
+        jmp Reduce_Water_Life
+
+East_Cmd
+        ; X has reached de limit
+        ldx player_x
+        cpx #$f
+        beq PR_No_Exit
+
+        inx
+        stx player_x
+
+        jmp Reduce_Water_Life
+        
+West_Cmd
+        ; Y has reached de limit
+        ldx player_x
+        ; Cero
+        beq PR_No_Exit
+
+        dex
+        stx player_x
+
+        jmp Reduce_Water_Life
+
+
+PR_No_Exit
+        lda #<str_no_exit
+        ldy #>str_no_exit
+        jsr PRTSTR
+        rts
+  </code>
+</pre>
+
+<p>There is little more to say.</p>
+
+
+<h2>Answers to verbs</h2>
+
+
+<p>Executing the actions so verbs are similar to Pursuing Tom Ram. Here you have some examples.</p>
+<p>CPlayer can only drink if she is in an oasis or she carries a filled flask. You have both checks in the code. </p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+Drink_Cmd
+        lda current_loc_type
+        cmp #OASIS_LOC
+        bne @Check_Flask
+
+        ;jsr Print_Ok
+        jmp @Drink
+
+@Check_Flask
+        ldy #F_FLASK
+        jsr read_flag_y
+        beq JMP_Print_You_Cannot
+
+        ldy #F_FILL_FLASK
+        jsr read_flag_y
+        beq JMP_Print_You_Cannot
+
+
+        ldy #F_FILL_FLASK
+        jsr clear_flag_y
+        ;jsr Print_Ok
+
+@Drink
+        jsr Set_Initial_Water
+        JSR PrintWater
+        rts
+
+JMP_Print_You_Cannot
+        jmp Print_You_Cannot
+
+  </code>
+</pre>
+
+
+
+<p>A similar command is Fill, because player can only fill a flask if she has one and she is in the oasis. Code is not here but you can get it in the repository.</p>
+<p>Take command uses a chain. You saw the chains in the guide about Pursing Tom Ram.</p>
+<p></p>
+
+
+<pre>
+  <code>
+;--- Take Command ---------------
+Take_Cmd
+        ; Take Idol
+        lda current_loc_type
+        cmp #IDOL_LOC
+        bne @Take_Flask
+
+        ldy #F_IDOL
+        jsr read_flag_y
+        bne Invalid_Take
+
+        ldy #F_IDOL
+        jsr set_flag_y
+        jsr Print_Ok
+        
+       rts
+
+@Take_Flask
+        lda current_loc_type
+        cmp #FLASK_LOC
+        bne @Take_Compass
+
+        ldy #F_FLASK
+        jsr read_flag_y
+        bne Invalid_Take
+
+        ldy #F_FLASK
+        jsr set_flag_y
+        ;jsr Print_Ok
+        lda #<str_take_flask
+        ldy #>str_take_flask
+        jsr PRTSTR
+
+        
+        rts
+
+@Take_Compass
+        lda current_loc_type
+        cmp #COMPASS_LOC
+        bne @Take_Ankh
+
+        ldy #F_COMPASS
+        jsr read_flag_y
+        bne Invalid_Take
+
+        ldy #F_COMPASS
+        jsr set_flag_y
+        ;jsr Print_Ok
+
+        lda #<str_take_compass
+        ldy #>str_take_compass
+        jsr PRTSTR
+
+       rts
+
+@Take_Ankh
+        lda current_loc_type
+        ;sta mem_mon
+        ;sta mem_mon+1
+        cmp #ANKH_LOC
+        bne Invalid_Take ; No more items
+
+        ldy #F_ANKH
+        jsr read_flag_y
+        bne Invalid_Take
+
+        ldy #F_ANKH
+        jsr set_flag_y
+        jsr Print_Ok
+
+        rts
+
+Invalid_Take
+        jsr Print_You_Cannot
+        rts
+  </code>
+</pre>
+
+
+<p>Finally, some code depends on the player carrying an object. One example is the flask. Another example is the compass and the command Guide. </p>
+<p></p>
+
+<pre>
+  <code>
+;--- Guide command --------------
+Guide_Cmd
+        ; Check if you have compass
+        ldy #F_COMPASS
+        jsr read_flag_y
+        beq Invalid_Take
+
+        lda #<str_compas_point
+        ldy #>str_compas_point
+        jsr PRTSTR
+
+        lda player_y
+        ;sta mem_mon
+        sec
+        sbc #DESTINATION_Y
+        ;sta mem_mon+1
+        beq @Check_X
+        bcc @Y_Minus
+        ; X is bigger, go south
+        lda #<str_south
+        ldy #>str_south
+        jsr PRTSTR
+        jmp @Check_X
+
+@Y_Minus
+        lda #<str_north
+        ldy #>str_north
+        jsr PRTSTR
+
+
+@Check_X
+        lda player_x
+        ;sta mem_mon
+        sec
+        sbc #DESTINATION_X
+        ;sta mem_mon+1
+        beq @End
+        bcc @X_Minus
+        ; Y is bigger, 
+        lda #<str_west
+        ldy #>str_west
+        jsr PRTSTR
+        rts
+
+@X_Minus
+        lda #<str_east
+        ldy #>str_east
+        jsr PRTSTR
+@End
+        rts
+  </code>
+</pre>
+
+
+<p>Guide command is long because the command has to check where the player is, where the city is and generate the right message. The key action is to subtract the position of the city and the player, once for x axis (so you can print easo or west), and another one for y axis (so you can print up or down).</p>
+<p>For example, take a second look to this piece of code</p>
+
+
+<pre>
+  <code>
+	sec
+        sbc #DESTINATION_Y
+        ;sta mem_mon+1
+        beq @Check_X
+
+  </code>
+</pre>
+
+
+<p>If the result of sbc (subtraction) is bigger to 0, the player is at the west of the city, so he have to move to the west. You may search the part of the code where the west is printed.</p>
+<p></p>
+<p></p>
+
+
+<h2> The Temple</h2>
+
+<p>The Temple is a special location. If the player finds the temple and have the Ankh (an Egyptian cross), he may enter using the command Enter. While player remains in the temple she can sleep, to recover life, drink or fill, like an oasis and exit the temple.</p>
+<p>One more thing, if player is in the temple, the loc prints a message saying than player is in the temple (not lost in desert).</p>
+<p>First task, how do I know if player is in the temple? When player enters the temple, I move the X coordinate to a value outside the map. With this value, I know when the player is in the temple.</p>
+
+<pre>
+  <code>
+;--- Enter_Cmd ----------------
+Enter_Cmd
+        ; Chaek you are in temple LOC
+        lda current_loc_type
+        cmp #TEMPLE_LOC
+        bne Print_You_Cannot ; No more items
+
+        ; Chack you have the Ankh
+        ldy #F_ANKH
+        jsr read_flag_y
+        beq Print_You_Cannot
+
+        ; Move to a special loc
+        lda #$10
+        sta player_x
+        sta player_y
+
+        ; Temple is like an Oasis
+        lda #OASIS_LOC
+        sta current_loc_type
+        jsr Loc_Temple
+
+        rts
+  </code>
+</pre>
+
+<p>If player is in temple, a specific location message is printed. See the code at PrintLOC subroutine. </p>
+
+
+<pre>
+  <code>
+PrintLOC
+        ; check if player is in the temple
+        lda player_x
+        cmp #$10
+        bne @Not_in_Temple
+
+        jsr Loc_Temple
+        jmp MainLoop
+@Not_in_Temple
+	; other code
+
+
+Loc_Temple
+        jsr CLRS
+        jsr PrintStats
+
+       lda #<str_in_the_temple
+       ldy #>str_in_the_temple
+       jsr PRTSTR
+
+        rts
+  </code>
+</pre>
+
+<p>There is no Exit verb to exit the temple. Instead, the player has to move to go back to the desert location of the temple. I have to write a specific subroutine to move player when she is in the temple an goes to any cardinal point. This is the code. </p>
+
+<pre>
+  <code>
+;-------------
+ExecuteCommand
+        ;lda verb_index ; already loaded
+        lda player_x
+        
+        ; check if player is in the temple
+        cmp #$10
+        bne @Jump_to_Cmd
+
+        ; Player is in temple
+        lda verb_index
+
+        ; check if is a movement verb
+        sec
+        sbc #$4
+        bcs @Jump_to_Cmd
+        
+        ; It is a movement verb
+        ; I place the player in the temple loc
+        lda #TEMPLE_X
+        sta player_x
+        lda #TEMPLE_Y
+        sta player_y
+
+        ; Repeat main loop
+        jmp LocLoop
+
+  </code>
+</pre>
+
+
+<p> </p>
+<p> </p>
+
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="08.Enemies.html"> <<< Previous: Enemies</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="12.Miscelanea.html"> Next: Miscelanea >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Locations.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Locations.</title>
+  </head>
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura100.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Main loop</h2>
+
+<p>Main loop is very similar to the one from Pursuing Tom Ram</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+;--- Main --------------------------
+
+Game_Begin
+        ; Init variables
+        jsr Init
+        ; show intructions of the game
+        jsr Instructions
+        
+LocLoop
+        jsr CLRS
+        ; TODO check if you arrived
+        jsr PrintStats
+        jsr PrintLOC
+        jsr Jump_LOC
+
+MainLoop
+        jsr InputCommand ; get command
+        jsr EvalCommand
+        jmp MainLoop
+
+
+  </code>
+</pre>
+
+<p></p>
+
+<h2> Reading input</h2>
+
+<p>Input in Desert is easier than Pursuing Tom Ram due the game only understands a verb. I reused the same code, but dropping the parts dedicated to the name and fixing an inconsistency.</p>
+<p>In Pursuing Tom Ram, a value of 0 means no valid verb, but first verb has an index of 0. So I had do remember to decrement verb (and name) indexes by one before used them.</p>
+<p>I fixed it in this game. Desert uses a $ff value to indicate an invalid verb. Hope you think this solution is better.</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+TokenizeVerb
+; Token has to be in $Token cvector
+; This subroutine returns the index of the token in a
+; First verb is index 0; a verb_index = $FF means not found
+
+        ldy #$FF ; This vaklue means no valid verb
+        sty verb_index
+        iny
+
+@F_Loop    
+        lda verb_tokens,y
+        beq @F_Exit ; N
+        cmp verb
+        bne @Next1
+
+        iny
+        lda verb_tokens,y
+        cmp verb+$1
+        bne @Next2
+
+        lda verb+$1
+
+        tya
+        lsr
+        sta verb_index
+
+@F_Exit  
+        ; a = 0 not found means, other found  
+        rts
+
+@Next1   
+        iny
+@Next2   
+        iny
+        jmp @F_Loop
+  </code>
+</pre>
+
+<p>You read about techniques for working with the half of a byte and even with individual bits in the guide about Pursuing Tom Ram. If you do not remember that part of the guide or you skipped it, here you will find some ideas. </p>
+
+<h2> Flags</h2>
+
+<p>Desert reuses the code for the flags from Pursing Tom Ram. In addition, it uses more flags. Desert uses a flag for each item, to know if player carries the object or not. There are no hidden objects in Desert, although there is one object that can be destroyed. </p>
+<p>The code for handling the flags is the same as in the Pursuing tom Ram adventure. You can see that code below. </p>
+<p> </p>
+
+
+<pre>
+  <code>
+;---Flag subriotines --------------------
+
+set_x_y
+        ; Innter subroutine
+        ldx #$0
+        tya
+        and masks+$3
+        beq set_rts
+        inx
+        tya
+        sec
+        sbc #$8
+        tay
+set_rts
+        rts
+
+set_flag_y
+        jsr set_x_y
+        lda flags,x
+        ora masks,y
+        sta flags,x
+        rts ; Acumulador
+
+
+clear_flag_y
+        jsr set_x_y
+        lda masks,y
+        eor #$FF ; Invierto la mask
+        and flags,x
+        sta flags,x
+        rts ; Acumulador
+
+read_flag_y
+        ; a - bit of the flag
+        ; 0, not set
+        ; no 0, set
+        jsr set_x_y
+        lda flags,x
+        and masks,y
+        rts ; Acumulador
+
+  </code>
+</pre>
+
+<p> </p>
+<p> </p>
+
+<h2> Routing to locations</h2>
+
+<p>In a previous section, I told you that I use 4 bits to indicate the context of a location. Something has to happen in a location: showing a text message, allow player to perform some actions (like drinking or taking an object), etc. </p>
+<p>So I store a vector with the subroutines that executes the code for each location </p>
+<p> </p>
+
+<pre>
+  <code>
+v_locs  WORD Loc_Empty, Loc_Birds, Loc_Oasis, Loc_Oasis_East, Loc_Ruk, Loc_Idol
+        WORD Loc_Vibrates, Loc_Flask, Loc_Scorpion, Loc_Compass, Loc_Found_Temple
+        WORD Loc_Ankh, Loc_Final, Loc_Enemy_North
+
+  </code>
+</pre>
+<p>I have to search in the map, the actual location and use this previous vector to execute the code of the current loc. </p>
+<p>Subroutine PrintLOC prints nothing (bad name).- Instead it does this work. First, it checks if player is in temple (I will explain it in the future), then, calculate the index in the map from the X and Y of the player, uses the index to recover the content of the loc and stores it in current_loc_type. </p>
+<p> </p>
+<pre>
+  <code>
+;--------------------------
+; Wrong name for a subroutine
+; This one prints nothing
+; instead, it calculate the content of the LOC
+; and stores it current_loc_type
+; It is very usefull
+PrintLOC
+        ; check if player is in the temple
+        lda player_x
+        cmp #$10 ; This number is not in map
+        bne @Not_in_Temple
+
+        jsr Loc_Temple
+        jmp MainLoop
+
+@Not_in_Temple
+        ; Calculate LOC number from x and y
+        jsr Return_LOC_in_X
+
+        ; I use 4 bits for LOC content
+        ; So I dicie LOC / 2
+        txa
+        tay
+        lsr
+
+        ; Load LOC content
+        tax
+        lda row00,x
+        tax
+
+        ; Load again LOC number to see
+        ; if it is pair or odd
+        ; To see whcih part of the byte use
+        tya
+        and #%00000001
+        bne @LOC_is_odd ; odd
+        ; par
+        txa
+        lsr
+        lsr
+        lsr
+        lsr
+
+        jmp @Exit
+
+@LOC_is_odd
+        txa
+        and #%00001111 
+
+@Exit
+        ; Saves current LOC type
+        sta current_loc_type 
+        rts
+  </code>
+</pre>
+<p>I calculate the index from the X and Y of the player in the subroutine Return_LOC_in_X </p>
+<p>Remember one important thing you learnt in the guide about Pursuing Tom Ram. I am using half of a byte to store the content of the LOC, so a position from the vector (a byte) has two locs. If loc is odd I use the lower part of the byte but if it is no, I have to use the higher part. </p>
+<p> </p>
+
+<h2> Examples of location </h2>
+
+<p>The simplest location is Empry_Loc. There is nothing in this loc, so I print a message and nothing else. Here is the code. </p>
+<p> </p>
+
+<pre>
+  <code>
+Print_You_Are
+        lda #<str_you_are
+        ldy #>str_you_are
+        jsr PRTSTR
+        rts
+
+;---------
+Loc_Empty
+        jsr Print_You_Are
+
+        lda #<str_lost_loc0
+        ldy #>str_lost_loc0
+        jsr PRTSTR
+
+        jsr CR
+        
+        rts
+
+  </code>
+</pre>
+
+<p>Other locs that just print messages are: Loc_Birds, Loc_Oasis, Loc_Oasis_East </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+
+
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="04.StoringData.html"> <<< Previous: Storing data</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="08.Enemies.html"> Next: Enemies >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

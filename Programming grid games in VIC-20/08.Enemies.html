@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Enemies.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Enemies.</title>
+  </head>
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura100.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Enemy types</h2>
+
+<p>There are two enemies: Ruk (another name for Roc, a mythological bird) who drops your life and a gigantic scorpion who damage the player and, If the player carries a flask, it breaks the flask.  
+</p>
+<p> Here you have the code for the Roc</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+;------------
+Loc_Ruk
+
+        jsr Loc_Empty
+
+        ; If movement flag is set, no damage
+        ldy #F_MOVEMENT
+        jsr read_flag_y
+        bne @Exit
+
+        lda #<str_ruk_attack
+        ldy #>str_ruk_attack
+        jsr PRTSTR
+        jsr CR
+
+        lda life
+        sec
+        sbc #RUK_DAMAGE
+        ; Less than 0 
+        bcc Player_Is_Dead
+        sta life
+        jsr PrintLife
+
+        ; Set movement flag
+        ; So no more attacks until player moves
+        ldy #F_MOVEMENT
+        jsr set_flag_y
+
+@Exit
+        rts
+  </code>
+</pre>
+
+<p>Loc_Ruk checks if life drops bellows to zero and, in that case, jumps to Player_Is_Dead subroutine. This subroutine prints a message and restart the game.</p>
+<p>Here you have the code for the scorpion. It is longer because it checks if player carries a flask.</p>
+
+
+<pre>
+  <code>
+;-------------
+Loc_Scorpion
+        jsr Loc_Empty
+
+        ; If movement flag is set, no damage
+        ldy #F_MOVEMENT
+        jsr read_flag_y
+        bne @Exit
+
+        lda #<str_scorpion_attack
+        ldy #>str_scorpion_attack
+        jsr PRTSTR
+        jsr CR
+
+        lda life
+        sec
+        sbc #SCORPION_DAMAGE
+        
+        bcc Player_Is_Dead
+        sta life
+        jsr PrintLife
+
+
+        ; Set movement flag
+        ; So no more attacks until player moves
+        ldy #F_MOVEMENT
+        jsr set_flag_y
+
+
+        ; Destroy Flask if any
+        ldy #F_FLASK
+        jsr read_flag_y
+        beq @Exit
+
+        lda #<str_broken_flask
+        ldy #>str_broken_flask
+        jsr PRTSTR
+        
+        ldy #F_FLASK
+        jsr clear_flag_y
+        ldy #F_FILL_FLASK
+        jsr clear_flag_y
+        
+
+@Exit
+        rts
+  </code>
+</pre>
+
+<p>Code us very similar to the precious enemy. You may think you to extract the repeated code. It would be a good exercise and saves memory.</p>
+
+<h2>A problem with flasks</h2>
+
+
+<p>There is one type of object that can be destroyed, the flasks.</p>
+<p>If the player is carrying a flask and the player comes to a square where there is another flask, the game does not let him take it.</p>
+<p>Changing this is not difficult. In Pursuing Tom Ram adventure, you have examples of how to do this. I have not corrected that to keep the Desert code small and simple. If player wants to waste her water going back to take a flask again, is her decision.
+
+<p>I have placed the scorpions (enemies that destroy flaks) away from the locs with flasks. I hope the player will not be tempted to go back. </p>
+<p></p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="06.Locations.html"> <<< Previous: Locations</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="10.Verbs.html"> Next: Verbs >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

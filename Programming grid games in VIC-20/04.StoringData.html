@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Storing data.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Storing data.</title>
+  </head>
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura100.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Variables and page 0</h2>
+
+<p>You already know what page 0 is about (if you do not, read that section of Pursing Tom Ram).  
+</p>
+<p> In this game, I store more information, so I use more positions from page 0. In the source code, you have the addresses I use and their original mission.</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+; $3-$4, ADRAY1, vector to flating point / integer routine (INTIDX)
+; Never used by basic
+player_x = $3
+player_y = $4
+
+; $5-$6, ADRAY2, vector to flating point to integer (MAKFP)
+; Never used by basic
+water = $5
+life = $6
+
+; $/ Search-character for basic
+; $8 Scan-quotes flag
+;verb = $7 ; Uses $7 and $8
+; No funciona, puede que las rutinas de inpt loc mabien
+
+; $9 Column cursor before TAB
+; $A Byte to LOAD
+verb = $9
+
+; $B  used as an index into the BASIC input text
+
+; $C flag for array routines
+verb_index = $C
+
+; $D Type of variable: string / numeric
+; no funciona
+
+; $e
+current_loc_type = $e
+
+; Empty page 0 psotiton 
+tmp_a = $fb
+tmp_b = $fc
+
+  </code>
+</pre>
+
+<p>Due I call BASIC subroutines I have to be careful not to use any positions on page 0 that use those BASIC routines. For that reason, I have left some gaps.</p>
+<p>I also use the string buffer at the top of page 3 (address $200).</p>
+
+<h2> Map of desert</h2>
+
+<p>Map is 16x16. Desert has 256 locations in total. I use this value because I have to now the loc the player is the biggest value I can store in a byte is 256.</p>
+<p>How do I store the content of a location?</p>
+<p>You could store a name per location. For example, if the number of the loc is 0 it means there is nothing there, a 1 means an enemy, a 2 an oases, etc.</p>
+<p>I am going to do it in this way but with a Little change. A number uses (al least) 1 byte and I I store a number per loc I will use 256 bytes. It nos not too mucho but I would like to save </p>
+<p>I use 4 bits per loc, so the map uses 128 bytes in memory. The drawback is I can only have 16 different locations, but there are some tricks to sue if I need more locations.</p>
+<p>This is the final map of the Student Edition.</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+; 0001 - Birds in the sky
+OASIS_LOC = $2; 0010 - Oasis
+;OASIS_TO_EAST = $3 ; 0011
+; Enemy 1: Ruk 0100
+IDOL_LOC = $5 ; Object 1: Idol 0101
+; Vibration 0110
+FLASK_LOC = $7 ; Object 2: Flask 0111
+; Enemy 2: Scorpion 1000
+COMPASS_LOC = $9  ; Object 3: Compass 1001
+TEMPLE_LOC = $a ; Temple 1010
+ANKH_LOC = $b ; Object 4: Ankh 1011
+FINAL_LOC = $c ; End of game 1100
+; Vision of an enemy 1101
+
+row00 BYTE EMPTY,     EMPTY,     %00000110, %01000110, EMPTY,     EMPTY,     EMPTY, EMPTY
+row01 BYTE %00000111, EMPTY,     EMPTY,     %01100000, EMPTY,     %00001001, EMPTY, %00100001
+row02 BYTE EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY, %01100000
+row03 BYTE %00010000, EMPTY,     EMPTY,     EMPTY,     EMPTY,     %00000101, %00000110, %01000110
+row04 BYTE %00100000, EMPTY,     %00000001, EMPTY,     EMPTY,     %01100000, EMPTY, %01100000
+row05 BYTE %00000110, EMPTY,     %00000010, EMPTY,     %00000110, %10000110, EMPTY, EMPTY
+row06 BYTE %01101000, %01100000, %00000001, EMPTY,     EMPTY,     %01100000, EMPTY, %01110000
+row07 BYTE %00000110, EMPTY,     EMPTY,     EMPTY,     EMPTY,     %00000010,EMPTY, EMPTY
+row08 BYTE EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY,EMPTY, EMPTY
+row09 BYTE EMPTY,     %01110000, EMPTY,     EMPTY,     EMPTY,     %11010110, EMPTY,     EMPTY
+row10 BYTE EMPTY,     EMPTY,     %00110011, %00001010, EMPTY,     %01100100, %01100000, %00000110
+row11 BYTE %00001011, EMPTY,     EMPTY,     EMPTY,     %01100000, %00000110,EMPTY, %01100100
+row12 BYTE EMPTY,     EMPTY,     EMPTY,     %00000110, %10000110, EMPTY,%00001100, %00000110
+row13 BYTE %00000010, %00010001, EMPTY,     EMPTY,     %00000110, EMPTY, EMPTY, EMPTY
+row14 BYTE EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY, EMPTY,%00010001, %00100000 ; 119
+row15 BYTE EMPTY,     EMPTY,     EMPTY,     EMPTY,     EMPTY, EMPTY,EMPTY, EMPTY
+  </code>
+</pre>
+
+<p>You read about techniques for working with the half of a byte and even with individual bits in the guide about Pursuing Tom Ram. If you do not remember that part of the guide or you skipped it, here you will find some ideas. </p>
+<p> </p>
+<p> </p>
+<p> </p>
+
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="02.Introduction.html"> <<< Previous: Introduction</a> |||
+		<a href="index.html"> Index</a> |||
+		<a href="06.Locations.html"> Next: Locations >>></a>
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	
