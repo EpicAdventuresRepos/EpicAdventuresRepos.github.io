@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Programming grid games in assembly for VIC-20. Superdesert and random numbers.">
+    <link rel="stylesheet" type="text/css" href="epic_adventures_1.css">
+    <title>Programming grid games in assembly for VIC-20. Superdesert and random numbers.</title>
+  </head>
+  <body>
+    <div id="header" class="header_class">
+	
+	</div>
+
+	
+	<div>
+	
+	<table border=0>
+		<tr> 
+			<td> <img src="Captura100.jpg"/>
+		</td>
+		<td> <b> Desert </b>
+			<br/> <br/>
+			Game available in <a href="https://epicadventures.itch.io/vic-20-unexpanded-adventures">
+				Itch.io.
+			</a>
+			<br/> <br/>
+			Soruce code in <a href="https://github.com/EpicAdventuresRepos/VIC-20_Unexpanded_Adventures">
+				Github.
+			</a>
+			</td>
+		</tr>
+
+	</table>
+	<hr/>
+	</div>
+	
+	<div id="doc_title">
+	<h1>Programming grid games in assembly for VIC-20.</h1>
+	</div>
+	
+	<br/>
+	
+    <div id="body" class="body_class">
+	<h2> Superdesert and random numbers</h2>
+
+<p>Superdesert is a version of Desert where the city is placed in a random location at the beginning of each game. It is a good chance to learn how to generate random numbers using assembler and ROM routines.</p>
+<p>One tip. My best advice: if you do not know how to write anything in assembler, write it in BASIC first and search for the ROM routines. I use this advice myself with random number. If you program in a C-64 you have enough memory to implement your own routines, but that is hardly possible with the memory of the unexpanded VIC-20.</p>
+
+	<h2> An introduction to random numbers</h2>
+	
+<p> The code for generating a random number in BASIC is:</p>
+<p></p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+REM Random number between 1 and 6
+INT(RND(1)*6)+1
+  </code>
+</pre>
+
+<p> 
+RND generates a random float number between 0 and 0.999…. Parameter number determines how the random seed is initialized. 
+</p>
+<p>A positive number generates a different random number each time from a sequence stored in the memory. A negative number generates the same random number always. If you want a different random number, you have to change the negative number. Zero generates a random number from the internal timer and clock. I will use this one. </p>
+<p> This has been a brief resume. There is more in the RND function but this is enough for Superdesert. We will see the code soon.</p>
+<p>After generating a random number, you have to multiply them for the range of the number you want. For example, if you want a random number between 0 and 9 you multiply it plus 10. Zero plus ten is 0 and 0.99… plus ten is 9.999… </p>
+<p> You probably do not want a float number, so it is time to convert it into an integer. That is the goal of the function INT. This function just remove the decimal part. If you want a number between 1 and 10 instead of 0 and 9, you just add 1 at the end.</p>
+<p>Wow, this is a lot of work. Now it is time to check the ROM routines to find how to do all these operations.</p>
+<p>RND function is at address $E094. If you read the code for this function (I did), you will find a bunch of jumps at the very beginning of the routine depending on the sign of the parameter. With this jumps, we can jump to the part of the routine we want without worry about the parameter. The address of RND(0) is $E09b</p>
+<p>We have our random number, but where is it? Due it is a float number (and Commodore computers usually perform all numeric operations with float numbers), it is in the FAC. FAC is a 6 bytes long floating pointer number. There are two in the Commodores machines and these machines use them very often because many mathematical operations are calculated using floating number. For that reason, ROM is full with routines to manage FAC (and FAC2) and you do not need to manipulate them by yourself. </p>
+<p>Next step is to multiply the random number. Reading the list of ROM routines again, I found the MULTEN routine to multiply the FAC plus 10. I am going to use that and I will get a number between 0 and 9 which is fine for Superdesert. The address of the MULTEN routine is $DAE2</p>
+<p>The last step is converting a four-byte integer into a two bytes integer. Routine INTIDX (address $D1AA) do this conversion storing the higher part of ht integer number in accumulator and lower part in Y register. Due the number is between 0 and 9, A will always be 0.</p>
+<p>Finally the code. This code is part of the subroutine we will see in the next section.</p>
+<p></p>
+
+<pre>
+  <code>
+; Random subroutines
+RND_S = $E09b ;  BASIC RND (no standard entry point)
+MULTEN = $DAE2 ;  Multiply FAC by 10.
+INT = $DCCC ;  FAC is rounded down to an integer in floating point format (4 bytes)
+INTIDX = $D1AA ; INTIDX (A higher, Y lower)
+
+; Calculate a random number
+        ; Between 0 and 9
+        ;
+        jsr RND_S
+        jsr MULTEN ; MULTEN
+        jsr INT
+        jsr INTIDX ; INTIDX (A higher, Y lower)
+
+
+
+  </code>
+</pre>
+
+<h2> Placing the city in the map</h2>
+<p>Now we have our random number, it is time to use it to place the city randomly in the map. </p>
+<p>This routine is long because it has two do two different tasks and I do not reuse code, so there are duplicated code. Sadly, it is shorter to duplicate code than to make calls to subroutines.</p>
+<p>First task is to clean the previous location of the city. I calculate the index in the map and I place an EMPTY value. I can do it in this way because there is always an empty space to the left and the right of the city.</p>
+<p></p>
+<p></p>
+
+<pre>
+  <code>
+Random_City
+
+        ; Clean previous city
+
+        ; Ocupa lo menos que rusar una subrutina
+        ; Porque la subrutina no divide entre dos
+        lda city_x
+        asl
+        asl
+        asl
+        asl
+        clc
+        adc city_y
+        lsr
+        tax
+        lda #EMPTY
+        sta row00,x 
+
+        ; every loc is 4 bits only
+        ; the locations of city have nothing next
+        ; so I can save the whole byte safely.
+        lda #EMPTY
+        sta row00,x 
+
+	;….
+
+
+  </code>
+</pre>
+<p>Second task is to generate the random number and placing the city.</p>
+<p>Too much randomness is not fun. To avoid bad locations for the city, I have selected a set of locations. The random number between 0 and 9 selects one of these locations. The drawback is that a player may discover than city always appear in some specific locations but I do not see a problem. </p>
+<p>First, the code where I sore locations for the city.</p>
+<p></p>
+
+<pre>
+  <code>
+
+;--- Random temple ---------
+
+v_city_x BYTE $2, $5, $9, $d, $f, $3, $2, $9, $f, $e
+v_city_y BYTE $e, $f, $f, $c, $9, $a, $e, $f, $9, $f
+
+
+  </code>
+</pre>
+<p>I did not found ten good places for the city, so I repeat some of them.</p>
+<p>Now, it is time to see the rest of the routine. Here is the code.</p>
+
+<pre>
+  <code>
+Random_City
+
+        ; Clean previous city
+
+        
+        ; Calculate a random number
+        ; Between 0 and 9
+        ;
+        jsr RND_S
+        jsr MULTEN ; MULTEN
+        jsr INT
+        jsr INTIDX ; INTIDX (A higher, Y lower)
+        ; A is always 0
+        ; Random numer is in Y
+
+        ; Repeat this code is shorter than call
+        ; subroutine Return_LOC_in_X
+
+        lda v_city_x,y
+        sta city_x
+
+        lda v_city_y,y
+
+        ; Stores the temple to reste it in a new game
+        sta city_y
+        asl
+        asl
+        asl
+        asl
+        clc
+        adc v_city_x,y
+
+        ; save the original value
+        ; I will use it soon again
+        tay
+        lsr
+        tax
+
+         ; Load again LOC number to see
+        ; if it is pair or odd
+        ; To see whcih part of the byte use
+        tya
+        and #%00000001
+        bne @LOC_is_odd ; odd
+        ; Change the higher part of the byte to put the temple
+        
+        lda #FINAL_LOC
+        asl
+        asl
+        asl
+        asl
+        clc
+        adc row00,x
+        ; Done
+        
+        jmp @Exit
+
+
+@LOC_is_odd
+        ; change the lower part
+        lda #FINAL_LOC
+        clc
+        adc row00,x
+
+@Exit
+        sta row00,x
+        lda row00,x
+        rts
+
+
+  </code>
+</pre>
+<p>You may now identify the lines that generates the random number easily. After that I change the map to place the cit. first I have to calculate the index in the map combining the X and the Y (remember Y is the highest part of the byte and X is the lower one). Then, I check if location is odd or pair to see if I have to change the first middle or the second middle of the byte in that location.</p>
+<p>I always place the city in an empty space, so, there is always four zeros in that part of the byte. I just add the value that indicate a city in that temple and job is done.</p>
+
+<h2> Final tip</h2>
+
+<p>If you want to try different things using random routines, or other routines involving float numbers, you should use FLTASC to convert the FAC1 into a STR to print it on screen.  The String is stored in the memory area starting at address $100.</p>
+<p></p>
+</div>
+	<br/>
+	<hr/>
+    <div id="footer" class="footer_class">
+	<p>
+		<a href="10.Verbs.html"> <<< Previous: Movement. Verbs</a> ||| 
+		<a href="index.html"> Index</a> |||
+		<a href="12.Miscelanea.html"> Next: Miscelanea >>></a> 
+		<!-- <a href="04.StoringData.html"> Next: Storing data >>></a> -->
+	</p>
+	<br/>
+	<p class="links"> Epic Adventures is at @eadventures_cm and at <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+ </body>
+</html>
+	

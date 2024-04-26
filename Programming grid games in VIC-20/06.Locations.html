@@ -55,13 +55,19 @@
 
 Game_Begin
         ; Init variables
+
+        ; Before init for resuing some routines.
+        jsr Random_City
         jsr Init
         ; show intructions of the game
         jsr Instructions
         
 LocLoop
+        ; Reset stack
+        ldx #$ff
+        txs
+
         jsr CLRS
-        ; TODO check if you arrived
         jsr PrintStats
         jsr PrintLOC
         jsr Jump_LOC
@@ -75,7 +81,10 @@ MainLoop
   </code>
 </pre>
 
-<p></p>
+<p>Resetting stack is more important in Desert than in Pursuing tom Ram.</p>
+<p>If you read the source code of Desert, you will find that, many times, I call subroutines with JSR but I do not go back with RTS. JSR stores the actual memory address in the stack, so, when the processor finds a RTS, it knows where to go back to continue the execution.</p>
+<p>If I jump to a subroutine with JSR but I do not execute a RTS, for example, because I go to another subroutine with JMP, the memory address remains in stack. If you play long time, the stacks will, be full and the program crashes.</p>
+<p>At the beginning of the LocLoop part there is not any JSR call waiting to return, so it is a good time to clear the stack. There is a specific register for the memory address of the stack, S register, so I load the original position of the stack in this register. All information remaining in the stack will be rewriting without any problem.</p>
 
 <h2> Reading input</h2>
 

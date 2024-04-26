@@ -58,7 +58,7 @@
 
 <pre>
   <code>
-;--- Main subroutine --------------------------
+;--- Main --------------------------
 
 Game_Begin
         ; Init variables
@@ -67,22 +67,29 @@ Game_Begin
         jsr Instructions
         
 LocLoop
-        ; Print information
         jsr PrintContent
 
 MainLoop
+        ; Reset stack
+        ldx #$ff
+        txs
+
         jsr InputCommand; get command
         jsr EvalCommand
         jmp MainLoop
-        rts 
-
 
   </code>
 </pre>
 
 
 <p>Complex adventures should have a more complex main loop. For example, you may add a subroutine to perform actions after player writes a verb. </p>
-<p></p>
+
+<h2> Main loop</h2>
+<p>When I jump to a subroutine with JSR, the processor stores the address for coming back of the subroutine (with RTS) in the stack. Sometimes I do not call RTS,. Instead, I force the jump with (JMP). While the player plays, the stack is growing with useless memory addresses If the stack grows beyond limits, the computer crashes.</p>
+<p>I have to options. I could be careful enough to execute a RTS every time I call a JSR or I could clean the stack when it is safe.</p>
+<p>I did not find the way to execute a RTS at every time I jump with JSR, so I chose the second option. At the beginning of the main loop, I know there is no JSR jump waiting to return, so it is a safe place to clear the stack.</p>
+<p>Processor knows where the stack is because it stores the address in a register called S. so I set the original address of the pile in S at the beginning of the main loop.</p>
+<p>Two last words. First, the stack is managed by 6502, not commodore computers, so almost every machine worth a 6502 works with the sack in the same way. Second, the address of the stack begins at $199, but processor adds $100 to the address, so I store $99 in the S register.</p>
 <p></p>
 
 </div>
