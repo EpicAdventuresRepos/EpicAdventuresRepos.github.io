@@ -44,9 +44,9 @@
 	<br/>
 	
     <div id="body" class="body_class">
-	<h2> Portability to PET / Commodore-16</h2>
+	<h2> Portability to PET</h2>
 
-<p> Sadly, I did not make the code run ina a PET Commodore (BASIC 4.0). Game starts and instructions appear on screen but, then, there is a error and the game ends. </p>
+<p> Sadly, I did not make the code run in a PET Commodore (BASIC 4.0). Game starts and instructions appear on screen but, then, there is an error and the game ends. </p>
 <p> PETs have almost the same BASIC and Kernal ROMs than VIC-20 and C.-64 so it should be easy to make the game run. I need to take some extra time and search as much documentation as possible. <p>
 <p> My first try was the same than with C-64. I changed the starting address and the address of the subroutines for the PET. You have the code next.</p>
 <pre>
@@ -63,10 +63,30 @@
   </code>
 </pre>
 
-<h2> Portability to PET / Commodore-16</h2>
-<p>Commodores introduced deep changes in C-16 / PLUS/4 model. I am not sure if changing the starting address and tea dresses of the subroutines is enough to make the game run. I need further study. </p>
-<p>I have not in mind developing a native version for C-128. C-64 version should work fine in a C-128 in mode 64. </p>
+<h2> Portability to Commodore-16</h2>
+<p>Commodore introduced deep changes in C-16 and PLUS/4 model. However, the conversion of Pursuing tom Ram is as easy as the C-64 version. </p>
 
+<p>I only have to change the addresses for ROM subroutines to make this game ruining in a C-16. </p>
+<p>Starting address RAM is the same than CVIC-20, so no need to change the BASIC loader. </p>
+<pre>
+  <code>
+; C-16 unecpanded RAM has same address than VIC-20
+*=$1001
+
+; If RAM address is the sae, this loader (SYS 4109) remains the same too
+        BYTE    $0B, $10, $0A, $00, $9E, $34, $31, $30, $39, $00
+        BYTE    $00, $00
+
+; Subrutines
+PRTSTR = $9088
+CHROUT = $ffd2 ; The same in all C machines 
+CHIN = $FFCF ; The same in all C machines
+CLEAR = $c567 ; CLR Screen
+
+
+  </code>
+</pre>
+<p> Remember that CHROUT and CHIN uses the jump vector at the end of the memory. Those vectors allows compatibility so I do not have to change the addresses.</p>
 <p> </p>
 	</div>	
 	<br/>

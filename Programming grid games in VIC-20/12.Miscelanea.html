@@ -43,7 +43,7 @@
 	<br/>
 	
     <div id="body" class="body_class">
-	<h2> Porting to commodore 64</h2>
+	<h2> Porting to Commodore 64</h2>
 
 <p>If you read the guide of Pursuing Tom Ram you know what you have to do to run Desert in a C-64. You have to change the calls to BASIC Rom subroutines and change the initial memory address and the loader. Take a look at the changes.</p>
 <p></p>
@@ -67,6 +67,88 @@ PRTFIX = $BDCD ; Convert and pritns and integer
 </pre>
 
 <p> With these changes, the game runs equals to the VIC-20 version (including using 22 characters per line only). Feel free to try new things. There is a LOT of ideas you can add with your C-64.</p>
+
+<h2> Porting to Commodore 16</h2>
+
+<p>RAM address starts at same position than VIC-20, so no changes in the loader.
+
+</p>
+<p>The new addresses of the subroutines are the same than Pursuing Tom Ram, but I a problem.</p>
+
+
+<pre>
+  <code>
+*=$1001
+
+
+        BYTE    $0B, $10, $0A, $00, $9E, $34, $31, $30, $39, $00
+        BYTE    $00, $00
+
+; Subrutines
+PRTSTR = $9088
+CHROUT = $ffd2 ; The same in all C machines 
+CHIN = $FFCF ; The same in all C machines
+CLRS = $c567 ; CLR Screen
+
+
+  </code>
+</pre>
+
+<p>In Desert, I use the subroutine PRTFIX to convert an integer to chars and print them on screens. I did not find that subroutine in the ROM of the Commodore 16. Maybe the subroutine is there but there is no information in the books I found on Internet. </p>
+<p>I tried a different approach. Instead of printing number, I show a status bar made of characters.</p>
+<p>This is the code of the new print routines with the changes.</p>
+<pre>
+  <code>
+CHAR_WATER = $71
+CHAR_LIFE = $7A
+
+;-----------------------------
+PrintStats
+        jsr PrintWater
+        jsr PrintLife
+        jsr CR
+        rts
+
+
+PrintWater
+        lda #<str_water
+        ldy #>str_water
+        jsr PRTSTR
+
+        lda #CHAR_WATER 
+        ldx water
+        beq Print_Exit
+        jsr PrintChars
+        jmp Print_Exit
+
+
+PrintLife
+        lda #<str_life
+        ldy #>str_life
+        jsr PRTSTR
+
+        lda #CHAR_LIFE 
+        ldx life
+        beq Print_Exit
+
+        jsr PrintChars
+
+Print_Exit    
+        jsr CR
+        rts
+
+PrintChars
+        jsr CHROUT
+        dex
+        bne PrintChars
+        rts
+
+  </code>
+</pre>
+<p>Here you have the new interface:</p>
+<p>
+<img src="CapturaC16.jpg"/>
+</p>
 
 </div>
 	<br/>
