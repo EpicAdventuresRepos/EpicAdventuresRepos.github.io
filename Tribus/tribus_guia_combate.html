@@ -1,0 +1,650 @@
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Guía con todos los detalles del combate del videojuego de rol de tetxo Tribus, programado para un Amstrad CPC 464">
+	<meta name="keywords" content="tribus, tribes, amstrad, cpc, 464, rol, rpg, aventura, texto, interactive, fiction">
+	<meta name="robots" content="index, follow">
+	<meta property="og:title" content="Guía de combate de tribus">
+	<meta property="og:description" content="Guía con todos los detalles del combate del videojuego de rol de tetxo Tribus, programado para un Amstrad CPC 464">
+	<meta property="og:image" content="URL de la imagen para compartir">
+	<meta property="og:url" content="https://www.ejemplo.com/mi-pagina">
+	<link rel="canonical" href="https://www.ejemplo.com/pagina-preferida"> <!-- Por hacer -->
+    <title>Guía de combate de Tribus</title>
+    <style>
+        /* Define el color de fondo de toda la página */
+        body {
+            background-color: #D3D3D3; /* #808080 Gris */
+        }
+    </style>
+</head>
+
+<body style="font-size: 18">
+
+<center> 
+	<h1>Tribus. Guía de combate</h1>
+	<img src="./imgs/book1.gif" alt="Gif animado de un libro." />
+</center>
+
+<h1>Bienvenido al desierto blanco</h1>
+<hr/>
+<p>Tribus es una mezcla única y sorpréndete de aventura de texto y juego de rol desarrollado aprovechando hasta el límite la memoria de un Amstrad CPC 464.
+</p>
+<p>Como los mejores juegos de rol, Tribus se ha diseñado por capas. Es muy fácil entrar en su mundo y avanzar, pero si quieres descubrir todos sus secretos, tendrás que dar lo mejor de ti mismo.
+</p>
+<p>Parte de los secretos de Tribu son sus enemigos, armas y combate. Aquí tienes toda la información que necesitas para dominar este combate.
+</p>
+<p>Antes de continuar leyendo, pregúntate si no prefieres descubrir todo esto por si mismo.
+</p>
+<p>Descarga Tribus gratuitamente en el siguiente enlace (incluye emulador de CPC para que empieces a jugar con un único clic).
+</p>
+<p> <a href="https://epicadventures.itch.io/tribus"> Tribus en itch.io </a>
+</p>
+<p>
+<center> 
+<img src="./imgs/snoww.gif" alt="Gif animado de un copo de nieve." />
+</center> 
+</p>
+
+<br/>
+<h1>Guía de combate</h1>
+<hr/>
+<p>El combate comienza en cuanto llegas a una localización con un enemigo. Tribus te informará si en la localización hay algún enemigo.
+</p>
+<p>El combate se divide en asaltos. En cada asalto puedes indicar un comando y, después, el enemigo te atacará. Hay una excepción, si usas el comando Mirar (M), o abandonas la localización, el enemigo no te atacará.
+</p>
+<p>
+Para atacar al enemigo usa el comando Atacar (Atq) o una de las tres artes de combate que tienes descritas más abajo.
+</p>
+<p>Cuando atacas o el enemigo te ataca, el juego calcula un número aleatorio entre cero y cien. Después, se suma tu fuerza, o si ata un enemigo, su valor de ataque, y un acumulador.
+Si el resultado supera la defensa del oponente es un golpe con éxito y se resta el daño del arma, o del enemigo, de los puntos de vida.
+Si después de un ataque el jugador, o el enemigo no golpea, se incrementa un acumulador que también se suma al ataque. Así, cuanto más tiempo pase el jugador o un enemigo sin golpear, más probabilidades tendrá de hacerlo.
+</p>
+<p>El nivel del jugador se suma a la vida de los enemigos. Por ejemplo, si ya eres nivel 3 y te encuentras con un sirviente de nieve, este enemigo tendrá 11 puntos de vida.
+</p>
+<p>A continuación, tienes todas las estadísticas de los enemigos, las artes de combate y las armas. Es posible terminar el juego a nivel 2 
+y sin combatir, por lo que nada de esta guía es imprescindible para terminar Tribus.
+</p>
+
+
+<br/>
+<H1>Enemigos comunes</H1>
+<hr/>
+<p>Los enemigos comunes vuelven a aparecer cuando visitas determinadas localizaciones, por lo que son infinitos para que subas todos los niveles que quieras. El juego está pensado para poder ser terminado por un personaje a nivel 2, y el combate más difícil está pensado para nivel 15 aproximadamente.
+</p>
+<p>A continuación, tienes las estadísticas de los enemigos comunes.
+</p>
+
+<table border="1">
+  <tr>
+    <th>Enemigo</th>
+    <th>Puntos de vida</th>
+    <th>Ataque</th>
+    <th>Defensa</th>
+    <th>Daño</th>
+    <th>Puntos de experiencia</th>
+  </tr>
+  <tr>
+    <td>Capataz Troll</td>
+    <td>12</td>
+    <td>5</td>
+    <td>50</td>
+    <td>4</td>
+    <td>15</td>
+  </tr>
+  <tr>
+    <td>Gigante de hielo</td>
+    <td>20</td>
+    <td>20</td>
+    <td>40</td>
+    <td>7</td>
+    <td>35</td>
+  </tr>
+  <tr>
+    <td>Golem de hielo</td>
+    <td>15</td>
+    <td>10</td>
+    <td>40</td>
+    <td>4</td>
+    <td>18</td>
+  </tr>
+  <tr>
+    <td>Sirviente de nieve</td>
+    <td>8</td>
+    <td>0</td>
+    <td>30</td>
+    <td>2</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>Manada de lobos</td>
+    <td>26</td>
+    <td>20</td>
+    <td>50</td>
+    <td>4</td>
+    <td>40</td>
+  </tr>
+  <tr>
+    <td>Poseído (A)</td>
+    <td>3</td>
+    <td>5</td>
+    <td>40</td>
+    <td>2</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td>Poseído (B)</td>
+    <td>3</td>
+    <td>5</td>
+    <td>40</td>
+    <td>3</td>
+    <td>10</td>
+  </tr>
+</table>
+
+<p> Todos los enemigos suman a sus puntos de vida, tantos como el nivel del jugador. </p>
+
+<br/>
+<H2>Capataz troll </h2>
+<p>Esclavo que azotan a otros esclavos para no ser azotado. Sus ojos están blancos y cegados.
+</p>
+<p>Si llegas a una localización con un capataz troll, te atacará inmediatamente a menos que vayas cubierto de lodo.
+</p>
+
+<br/>
+<H2>Gigante de hielo </h2>
+<p>Un gigante de más de tres metros de altura, con una inteligencia mucho más pequeña que su tamaño. Le gusta vivir en cuevas, aunque tenga que caminar siempre a gatas. 
+
+</p>Si liberas al gigante encerrado por Allegra, podrás entrar en sus cuevas sin ser atacado, pro si no, tendrás que derrotar al gigante guardián y, cada vez que un gigante te vea, te atacará instantáneamente.
+</p>
+
+<br/>
+<H2>Golem de hielo </h2>
+<p>Creados por brujas de las nieves para cumplir misiones o custodiar lugares especiales, como centros de acumulación de magia.
+</p>
+<p>El golem de hielo que se encuentra en el interior de la mina guarda la hoja afilada. Tendrás que derrotarlo para conseguirla.
+</p>
+<p>El pico de minero les causa daño extra, consúltalo en las estadísticas de las armas.
+</p>
+
+
+<br/>
+<H2>Manada de lobos </h2>
+<p>Lobos grises que cazan juntos porque la manada es la única posibilidad de sobrevivir en el desierto blanco.
+</p>
+<p>Solo te enfrentarás a las manadas de lobos si te untas con la vejiga de Kaso cuando estés en el desierto blanco (no funciona en todas las localizaciones). Los lobos acudirán a ti atraídos por el olor y no dejarán de venir hasta que se pase el mal olor.
+</p>
+
+<br/>
+<H2>Sirviente de nieve </h2>
+
+<p>Más pequeño y débil que el golem de hielo. Toda aspirante a bruja de las nieves que se precie debe ser capaz de crearlos y de tener uno a su servicio.
+</p>
+
+
+
+<br/>
+<H1>Enemigos únicos</H1>
+<hr/>
+<p> Los enemigos únicos sólo aparecen una única vez. Una vez que los derrotes, ya no volverán a aparecer en el juego.
+</p>
+<p>A continuación, tienes las estadísticas de los enemigos únicos.
+</p>
+<table border="1">
+  <tr>
+    <th>Enemigo</th>
+    <th>Puntos de vida</th>
+    <th>Ataque</th>
+    <th>Defensa</th>
+    <th>Daño</th>
+    <th>Puntos de experiencia</th>
+  </tr>
+  <tr>
+    <td>Araña blanca</td>
+    <td>40</td>
+    <td>20</td>
+    <td>70</td>
+    <td>6</td>
+    <td>90</td>
+  </tr>
+  <tr>
+    <td>Bearserker</td>
+    <td>30</td>
+    <td>30</td>
+    <td>40</td>
+    <td>7</td>
+    <td>75</td>
+  </tr>
+  <tr>
+    <td>Engendro</td>
+    <td>9</td>
+    <td>30</td>
+    <td>40</td>
+    <td>3</td>
+    <td>25</td>
+  </tr>
+  <tr>
+    <td>Criatura final</td>
+    <td>95</td>
+    <td>10</td>
+    <td>40</td>
+    <td>7</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>Guardián de la tribu</td>
+    <td>30</td>
+    <td>20</td>
+    <td>60</td>
+    <td>6</td>
+    <td>70</td>
+  </tr>
+  <tr>
+    <td>Umbra</td>
+    <td>20</td>
+    <td>40</td>
+    <td>70</td>
+    <td>5</td>
+    <td>95</td>
+  </tr>
+  <tr>
+    <td>Jefe de la tribu</td>
+    <td>55</td>
+    <td>20</td>
+    <td>60</td>
+    <td>7</td>
+    <td>95</td>
+  </tr>
+  <tr>
+    <td>Jefe consumido</td>
+    <td>35</td>
+    <td>30</td>
+    <td>50</td>
+    <td>6</td>
+    <td>80</td>
+  </tr>
+</table>
+
+<p> Todos los enemigos suman a sus puntos de vida, tantos como el nivel del jugador. </p>
+
+
+<br/>
+<H2>Araña blanca </h2>
+<p>Araña recubierta de un manto de pelo blanco. Si su caparazón no fuera tan duro, sería una tela excelente para confeccionar ropa de abrigo. Las arañas blancas fueron expulsadas de su hogar. Pocas consiguieron adaptarse al frio.
+</p>
+<p> Si consigues derrotarla, conseguirás el martillo de herrero.
+</p>
+<p> Puedes evitar luchar con ella devolviéndoles algo que le arrebataron mucho tiempo atrás.
+</p>
+
+<br/>
+<H2>Bearserker</h2>
+<p>Oso gigante de ojos blancos y cegados, consumido por una furia demente.
+</p>
+
+<br/>
+<H2>Bearserker</h2>
+<p>Oso gigante de ojos blancos y cegados, consumido por una furia demente.
+</p>
+
+<br/>
+<H2>Criatura final</h2>
+<p>Te espera al final del juego. Nadie que la ha visto ha sobrevivido para contarlo.
+</p>
+
+
+<br/>
+<H2>Guardian de tribu</h2>
+<p>
+Guardián de la tribu de siempreviento en las alas. Gran mole de carne, mucho más grande que los demás guerreros de su tribu.
+</p>
+
+<br/>
+<H2>Umbra</h2>
+<p>La mejor guerra que nunca ha pisado el desierto blanco y la que menos paciencia tiene.
+</p>
+<p>Umbra lleva un arma en cada mano con las que te atacará dos veces durante el combate.
+</p>
+
+<br/>
+<H2>Jefe de de la escama blanca</h2>
+<p>
+Jefe de la tribu de la escama blanca. Un guerrero tan poderoso que ni siquiera Umbra se atrevió a desafiarle.
+</p>
+<p>
+Este combate comienza justo en cuanto acabas con Umbra. Recuerda que cada vez que subes de nivel, tus puntos de vida se reinician al máximo, por lo que debes enfrentarte a Umbra solo cuando tengas 5 puntos de experienca o más.
+</p>
+
+
+<br/>
+<H2>Jefe consumido</h2>
+<p> Tiempo atrás fue el orgulloso jefe de la tribu de colmillo. Ahora, corre salvaje buscando sangre que nunca le saciará.
+</p>
+<p> Si la tirada de ataque de este jefe es suficientemente alta, te causa una herida que nunca sana y perderás 3 puntos de vida permanentemente (además de los 6 puntos de daño).
+</p>
+
+<br/>
+<p>
+<center> 
+<img src="./imgs/chainbar.gif" alt="Gif animado de una cadena." />
+</center> 
+</p>
+
+<br/>
+<H1>Artes de combate</H1>
+<hr/>
+<p>
+A medida que subas de nivel, serás capaz de utilizar artes de combate cada vez más poderosas tres artes de combate distintas. Aquí tienes su descripción y cómo afectan esas artes de combate a los enemigos que encontrarás en el desierto blanco.
+
+<br/>
+<H3>Artes de combate en enemigos comunes</h3>
+<p>
+<table border="1">
+  <tr>
+    <th>Enemigo</th>
+    <th>Cargar</th>
+    <th>Saltar</th>
+    <th>Decapitar</th>
+  </tr>
+  <tr>
+    <td>Capataz Troll</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Engendro</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Gigante de hielo</td>
+    <td>No *</td>
+    <td>15 / 4</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Golem de hielo</td>
+    <td>No</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Sirviente de nieve</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Manada de lobos</td>
+    <td>No</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Poseído (A)</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Poseído (B)</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+</table>
+</p>
+
+<H3>Artes de combate en enemigos únicos</h3>
+<p>
+<table border="1">
+  <tr>
+    <th>Enemigo</th>
+    <th>Cargar</th>
+    <th>Saltar</th>
+    <th>Decapitar</th>
+  </tr>
+  <tr>
+    <td>Araña blanca</td>
+    <td>No</td>
+    <td>No *</td>
+    <td>No *</td>
+  </tr>
+  <tr>
+    <td>Bearserker</td>
+    <td>No</td>
+    <td>15 / 4</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Engendro</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Criatura final</td>
+    <td>No</td>
+    <td>20 / 6</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Guardián tribu 1</td>
+    <td>Sí</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Umbra</td>
+    <td>No</td>
+    <td>No</td>
+    <td>Sí</td>
+  </tr>
+  <tr>
+    <td>Jefe de la tribu de la escama</td>
+    <td>No</td>
+    <td>No *</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Jefe consumido</td>
+    <td>No</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+</table>
+
+</p>
+
+<br/>
+<H2>Cargar</h2>
+<p>Disponible a partir de nivel 2. 
+</p>
+<p>Si cargas con éxito, tu enemigo cae al suelo y no podrá atacarte en el siguiente asalto. Si atacas en el siguiente asalto, sumas 20 a tu tirada de ataque.
+</p>
+<p> No puedes cargar contra un enemigo ya derribado.
+</p>
+<p> (*) Si cargas contra un gigante de hielo, te atrapa y te hace un ataque especial que te hace perder 8 puntos de vida.
+</p>
+
+<br/>
+<H2>Atacar en salto</h2>
+<p>Disponible a partir de nivel 4. 
+<p>
+Saltas contra el enemigo buscando atacar un punto débil desprotegido. Cuando saltas tú también quedas desprotegido por lo que puedes sufrir un contrataque potente. 
+</p>
+<p>Cuando puedas atacar en salto a un enemigo, la tabla mostrará dos valores. El primero se suma a la tirada de ataque, y si consigues golpearle, el segundo se suma al daño.
+</p>Para realizar un ataque en salto, utiliza el comando “saltar”.
+<p> (*) Si intentas un ataque en salto contra la araña o el jefe de tribu, contraatacarán haciéndote perder dos puntos de vida.
+</p>
+
+<br/>
+<H2>Decapitar</h2>
+<p>Disponible a partir de nivel 7. 
+<p>Lanzas un golpe de predicción para acabar con tu enemigo. Ten cuidado porque te dejará expuesto a un contraataque. 
+</p>
+<p>Para decapitar usa el comando “decapitar”.
+</p>
+<p> (*) Si intentas decapitar a la araña blanca, contratacará haciéndote perder 12 puntos de vida.
+</p>
+
+<br/>
+<H1>Armas</H1>
+<hr/>
+<p> Las armas son imprescindibles en el combate de Tribus. Aquí tienes sus estadísticas y descripción.
+</p>
+
+<table border="1">
+  <tr>
+    <th>Arma</th>
+    <th>Daño</th>
+    <th>Localización</th>
+    <th>Especial</th>
+  </tr>
+  <tr>
+    <td>Ancla oxidada</td>
+    <td>10</td>
+    <td>Playa al noroeste de tu aldea</td>
+    <td>Necesitas más fuerza.</td>
+  </tr>
+  <tr>
+    <td>Cuchillo de servidor</td>
+    <td>5</td>
+    <td>Zona central del desierto blanco</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Daga sagrada</td>
+    <td>2</td>
+    <td>Tribu</td>
+    <td>Ver descripción.</td>
+  </tr>
+  <tr>
+    <td>Hoja delgada</td>
+    <td>7</td>
+    <td>Golem de la mina</td>
+    <td>Ver descripción.</td>
+  </tr>
+  <tr>
+    <td>Látigo de fuego</td>
+    <td>3</td>
+    <td>Mina</td>
+    <td>Ver descripción.</td>
+  </tr>
+  <tr>
+    <td>Maza de bárbaro</td>
+    <td>3</td>
+    <td>Arma inicial</td>
+    <td>No.</td>
+  </tr>
+  <tr>
+    <td>Martillo de herrero</td>
+    <td>6</td>
+    <td>Araña blanca</td>
+    <td>No.</td>
+  </tr>
+  <tr>
+    <td>Pico de minero</td>
+    <td>5</td>
+    <td>Zona de los poseídos</td>
+    <td>Ver descripción.</td>
+  </tr>
+</table>
+
+<br/>
+<H2>Ancla oxidada</h2>
+<p>Daño 10.
+</p>
+<p>Un viejo ancla de un barco que naufrago hace mucho tiempo. Necesitas tres o más puntos de fuerza para equiparla. 
+</p>
+<p>Necesitas tener más de dos puntos de fuerza para poder empuñarla.
+</p>
+<br/>
+<H2>Cuchillo de servidor</h2>
+<p>Daño 5.
+</p>
+<p> Cuchillo creado a partir de una espada forjada por un fuego que ya no se puede encontrar en el mundo. Esta arma era portada por los servidores de los dueños del fuego para asistirles en combate.
+</p>
+<br/>
+<H2>Daga sagrada de la tribu del colmillo</h2>
+<p>Daño 2.
+</p>
+<p>Daga creada a partir de lo que se cree fue el hueso de un dios.  Fabricada con el hueso de un dios lleno de ira.
+</p>
+<p> Para conseguir esta daga debes ayudar a la tribu del colmillo.
+</p>
+<p>Si la equipas esta daga en el combate contra el enemigo final, la daga suma tu nivel al daño. Por ejemplo, si tienes nivel 12, la daga tendrá daño 14.
+</p>
+
+<br/>
+<H2>Hoja delgada</h2>
+<p>Daño 7.</p>
+<p> Espada de hoja delgada pero muy resistente, propiedad de un poderoso caballero llegado desde el confín del mundo. La hoja es tan afilada que su dueño murió por su propio filo.
+</p>
+<p>En posesión del golem de hielo de la cueva. Tendrás que derrotarlo para conseguirla.
+</p>
+<p>Si se usa contra un golem de hielo, se rompe y desaparece.
+</p>
+<p> Si se usa contra un enemigo humano, el daño es 13. Los enemigos humanos son: el enemigo final el guardian, Umbra, el jefe y el jefe consumido.
+</p>
+
+<br/>
+<H2>Látigo de capataz</h2>
+<p>Daño 3.</p>
+<p>Arma creada por una bruja que esclavizó a los trolls. Usada por los capataces troll porque es un arma muy efectiva contra los propios trolls helados. 
+</p>
+<p> Si se usa contra un capataz troll, el daño es 9.
+</p>
+
+<br/>
+<H2>Maza de bárbaro</h2>
+<p>Daño 3.</p>
+<p>Un palo con un trozo de piedra atada con una tira de cuero. Muy eficaz. Daño: 3.
+</p>
+<p> Tu arma inicial. Siempre estará contigo.
+</p>
+
+<br/>
+<H2>Martillo de herrero</h2>
+<p>Daño 3.</p>
+<p> Un arma fabricada para el uso diario.
+</p>
+<p>En posesión de la araña blanca. Tendrás que derrotarla para conseguirlo.
+</p>
+
+<br/>
+<H2>Pico de minero</h2>
+<p>Daño 5.</p>
+<p>Un pico hecho por unas manos hábiles que no pudieron aprovecharlo.
+</p>
+<p>Si se usa contra un golem de hielo, el daño es 8.
+</p>
+
+
+<p>
+<center> 
+<img src="./imgs/weapon_20861.gif" alt="Gif animado de dos espadas." />
+</center> 
+</p>
+<p>
+</p>
+<br/>
+
+<hr/>
+<!-- Pie de página -->
+
+<p>
+		<<<
+		<a href="../index.html"> Index</a> |||
+		
+	</p>
+	<p class="links"> Epic Adventures @eadventures_cm and <a href="https://epicadventures.itch.io"> epicadventures.itch.io </a> 
+	</p>
+	
+</body>
+</html>
+
